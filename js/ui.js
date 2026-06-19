@@ -3,6 +3,7 @@ const UI = (() => {
   const $ = id => document.getElementById(id);
   let el = {};
   const nodes = new Map();   // passenger id -> DOM element
+  const itemNodes = new Map(); // 보너스 하트 id -> DOM element
   const PW = 54;             // 승객 노드 폭(px)
   let lastFloor = 1;
   let dispScore = 0;         // 점수 롤링 표시값
@@ -23,7 +24,7 @@ const UI = (() => {
       flash:$('flash'), countdown:$('countdown'), pauseOverlay:$('pauseOverlay'), sky:$('sky'),
       rEmoji:$('rEmoji'), rTitle:$('rTitle'), btnNext:$('btnNext'),
       rScore:$('rScore'), rStage:$('rStage'), rFloor:$('rFloor'), rSucc:$('rSucc'),
-      rFail:$('rFail'), rTime:$('rTime'), rBest:$('rBest'), rRecord:$('rRecord'),
+      rFail:$('rFail'), rTime:$('rTime'), rBest:$('rBest'), rBestFloor:$('rBestFloor'), rRecord:$('rRecord'),
     };
   }
 
@@ -37,10 +38,12 @@ const UI = (() => {
     for(const st of CONFIG.STAGES){
       const b = $('best' + st.id);
       if(b) b.textContent = Storage.getBest(st.id);
+      const f = $('floor' + st.id);
+      if(f){ const v = Storage.getBestFloor(st.id); f.textContent = v ? v + 'F' : '-'; }
     }
   }
 
-  function clearLane(){ el.lane.innerHTML = ''; nodes.clear(); }
+  function clearLane(){ el.lane.innerHTML = ''; nodes.clear(); itemNodes.clear(); }
 
   function stageById(id){ return id === 0 ? CONFIG.PRACTICE : (CONFIG.STAGES.find(s => s.id === id) || CONFIG.STAGES[1]); }
 
@@ -114,6 +117,29 @@ const UI = (() => {
     el.closeFill.style.width = (frac * 100) + '%';
 
     renderPassengers(s);
+    renderItems(s);
+  }
+
+  function renderItems(s){
+    const spanX = Math.max(40, el.lane.clientWidth - PW);
+    const spanY = Math.max(40, el.lane.clientHeight - 70);
+    const seen = new Set();
+    for(const it of s.items){
+      seen.add(it.id);
+      let n = itemNodes.get(it.id);
+      if(!n){
+        n = document.createElement('div');
+        n.className = 'heart-item';
+        n.dataset.id = it.id;
+        n.innerHTML = '<span class="hi-emoji">❤️</span>';
+        el.lane.appendChild(n);
+        itemNodes.set(it.id, n);
+      }
+      n.style.transform = 'translate(' + (it.x * spanX).toFixed(1) + 'px,' + (it.y * spanY).toFixed(1) + 'px)';
+    }
+    for(const [id, n] of itemNodes){
+      if(!seen.has(id)){ n.remove(); itemNodes.delete(id); }
+    }
   }
 
   function renderHearts(s){
@@ -182,15 +208,17 @@ const UI = (() => {
         floatText('+' + e.gained, 'success');
         descend();
         popFloor();
-        if(e.recovered){
-          el.hearts.classList.remove('pop'); void el.hearts.offsetWidth; el.hearts.classList.add('pop');
-          setTimeout(() => { floatText('❤️ +1', 'heart'); Sound.play('recover'); }, 200);
-        }
+        break;
+      case 'heartget':
+        el.hearts.classList.remove('pop'); void el.hearts.offsetWidth; el.hearts.classList.add('pop');
+        floatText(e.full ? '+50' : '❤️ +1', 'heart');
+        Sound.play('recover');
         break;
       case 'blocked':
         bump(el.btnClose);
         break;
       case 'gameover':
+        Sound.stopBgm();              // 결과 화면에서 배경음 정지
         renderResult(s);
         showScreen('result');
         if(s.won){ Sound.play('clear'); vibrate([0, 40, 60, 40, 120]); }
@@ -256,6 +284,7 @@ const UI = (() => {
     el.rFail.textContent = s.fails;
     el.rTime.textContent = fmtTime(s.elapsed);
     el.rBest.textContent = s.best;
+    if(el.rBestFloor) el.rBestFloor.textContent = s.practice ? '-' : (s.bestFloor ? s.bestFloor + 'F' : '-');
     el.rRecord.style.display = s.newRecord ? 'block' : 'none';
   }
 

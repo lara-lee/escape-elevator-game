@@ -33,25 +33,25 @@
       <div class="rules">
         <div class="rules-title">📋 규칙</div>
         <ul class="rules-list">
-          <li><b>🚪 문 닫기</b> → 3초 버티면 한 층 <b>아래로</b></li>
-          <li><b>승객이 닫는 중 도착</b> → 실패, 하트 <b>−1</b></li>
-          <li>문 열렸을 땐 승객이 그냥 타고 사라짐 → <b>빈 틈을 노리기</b></li>
-          <li><b>❤️ 하트 0개</b> → 야근(게임 오버)</li>
-          <li><b>🏁 1층 로비 도착</b> → 퇴근 성공!</li>
+          <li><b>🏢 꼭대기(20층) → 🏁 1층 로비</b> 도착 = <b>퇴근 성공!</b></li>
+          <li><b>🚪 문 닫기</b> → 3초 버티면 <b>한 층 아래로</b></li>
+          <li><b>승객 오는 중에 닫으면</b> → 하트 <b>−1</b> (0개면 야근·게임 오버)</li>
+          <li>하늘에서 <b>❤️ 하트</b>가 떨어지면 <b>탭해서 잡기</b> → 하트 +1</li>
         </ul>
         <div class="rules-pax">
           <div class="pax low"><span>🎓</span><b>인턴</b><i>느림</i></div>
           <div class="pax mid"><span>🧑‍💼</span><b>사원</b><i>보통</i></div>
           <div class="pax high"><span>📦</span><b>택배</b><i>지연</i></div>
           <div class="pax max"><span>👔</span><b>부장</b><i>빠름</i></div>
+          <div class="pax ceo"><span>🕴️</span><b>대표</b><i>초고속</i></div>
         </div>
       </div>
 
       <div class="menu-actions">
-        <button id="btnStart" class="menu-act primary"><span class="ma-ico">▶️</span><span class="ma-label">게임 시작</span></button>
-        <button id="btnPractice" class="menu-act"><span class="ma-ico">🎯</span><span class="ma-label">연습 게임</span></button>
-        <button id="btnInstall" class="menu-act" style="display:none"><span class="ma-ico">📲</span><span class="ma-label">앱 설치</span></button>
+        <button id="btnStart" class="menu-act primary">게임 시작</button>
+        <button id="btnPractice" class="menu-act practice">연습 게임</button>
       </div>
+      <button id="btnInstall" class="install-link">📲 앱 설치</button>
     </div>
   </section>
 
@@ -60,31 +60,32 @@
     <div class="stage-inner">
       <button id="btnBack" class="back-btn">← 메인</button>
       <h2 class="stage-h">단계 선택</h2>
+      <p class="stage-sub">🏢 모든 단계 <b>20층</b> — 꼭대기에서 1층 로비까지 내려가면 퇴근 성공!</p>
       <div class="stage-list">
         <button class="stage-card s1" data-stage="1">
           <span class="sc-emoji">☕</span>
-          <span class="sc-text"><b>1단계 · 느긋한 오후</b><i>10층 · 승객이 드물고 느려요</i></span>
-          <span class="sc-meta"><span class="dots">●○○○</span><span class="sc-best">최고 <b id="best1">0</b></span></span>
+          <span class="sc-text"><b>1단계 · 느긋한 오후</b><i>승객 드뭄·느림</i></span>
+          <span class="sc-meta"><span class="dots">●○○○○</span><span class="sc-heart">❤️×1</span><span class="sc-best">최고 점수 <b id="best1">0</b></span><span class="sc-floor">최고 도달 <b id="floor1">-</b></span></span>
         </button>
         <button class="stage-card s2" data-stage="2">
           <span class="sc-emoji">🚶</span>
-          <span class="sc-text"><b>2단계 · 평범한 퇴근</b><i>20층 · 표준 난이도</i></span>
-          <span class="sc-meta"><span class="dots">●●○○</span><span class="sc-best">최고 <b id="best2">0</b></span></span>
+          <span class="sc-text"><b>2단계 · 평범한 퇴근</b><i>표준 난이도</i></span>
+          <span class="sc-meta"><span class="dots">●●○○○</span><span class="sc-heart">❤️×2</span><span class="sc-best">최고 점수 <b id="best2">0</b></span><span class="sc-floor">최고 도달 <b id="floor2">-</b></span></span>
         </button>
         <button class="stage-card s3" data-stage="3">
           <span class="sc-emoji">🏃</span>
-          <span class="sc-text"><b>3단계 · 러시아워</b><i>30층 · 자주, 빠르게 몰려와요</i></span>
-          <span class="sc-meta"><span class="dots">●●●○</span><span class="sc-best">최고 <b id="best3">0</b></span></span>
+          <span class="sc-text"><b>3단계 · 러시아워</b><i>자주·빠르게</i></span>
+          <span class="sc-meta"><span class="dots">●●●○○</span><span class="sc-heart">❤️×3</span><span class="sc-best">최고 점수 <b id="best3">0</b></span><span class="sc-floor">최고 도달 <b id="floor3">-</b></span></span>
         </button>
         <button class="stage-card s4" data-stage="4">
           <span class="sc-emoji">🔥</span>
-          <span class="sc-text"><b>4단계 · 야근 지옥</b><i>40층 · 쉴 틈이 없습니다</i></span>
-          <span class="sc-meta"><span class="dots">●●●●○</span><span class="sc-best">최고 <b id="best4">0</b></span></span>
+          <span class="sc-text"><b>4단계 · 야근 지옥</b><i>쉴 틈 없음</i></span>
+          <span class="sc-meta"><span class="dots">●●●●○</span><span class="sc-heart">❤️×4</span><span class="sc-best">최고 점수 <b id="best4">0</b></span><span class="sc-floor">최고 도달 <b id="floor4">-</b></span></span>
         </button>
         <button class="stage-card s5" data-stage="5">
           <span class="sc-emoji">😈</span>
-          <span class="sc-text"><b>5단계 · 대표님 등장</b><i>50층 · 부장보다 빠른 대표 🕴️ 출현</i></span>
-          <span class="sc-meta"><span class="dots">●●●●●</span><span class="sc-best">최고 <b id="best5">0</b></span></span>
+          <span class="sc-text"><b>5단계 · 대표님 등장</b><i>초고속 대표 🕴️ 출현</i></span>
+          <span class="sc-meta"><span class="dots">●●●●●</span><span class="sc-heart">❤️×5</span><span class="sc-best">최고 점수 <b id="best5">0</b></span><span class="sc-floor">최고 도달 <b id="floor5">-</b></span></span>
         </button>
       </div>
     </div>
@@ -154,9 +155,12 @@
         <div class="rs"><span>방해 받음</span><b id="rFail">0</b></div>
         <div class="rs"><span>플레이 시간</span><b id="rTime">0:00</b></div>
         <div class="rs"><span>최고 점수</span><b id="rBest">0</b></div>
+        <div class="rs"><span>최고 도달 층</span><b id="rBestFloor">-</b></div>
       </div>
-      <button id="btnNext" class="btn-primary" style="display:none">다음 단계 ▶</button>
-      <button id="btnRetry" class="btn-primary">다시하기</button>
+      <div class="result-actions">
+        <button id="btnNext" class="btn-primary" style="display:none">다음 단계 ▶</button>
+        <button id="btnRetry" class="btn-primary">다시하기</button>
+      </div>
       <button id="btnHome" class="btn-ghost">메인으로</button>
     </div>
   </section>

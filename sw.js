@@ -1,5 +1,5 @@
 // sw.js — 서비스워커 (cache-first → 오프라인 플레이)
-const CACHE = 'escape-elevator-v4';
+const CACHE = 'escape-elevator-v7';
 const ASSETS = [
   './',
   './index.html',
@@ -33,23 +33,28 @@ self.addEventListener('activate', (e) => {
 self.addEventListener('fetch', (e) => {
   const req = e.request;
   if(req.method !== 'GET') return;
-  e.respondWith((async () => {
-    const cached = await caches.match(req);
-    if(cached) return cached;
-    try {
-      const res = await fetch(req);
-      const url = new URL(req.url);
-      if(url.origin === location.origin && res.ok){
+  const url = new URL(req.url);
+
+  if(url.origin === location.origin){
+    // 동일 출처: 네트워크 우선(최신 보장) → 실패 시 캐시
+    e.respondWith((async () => {
+      try {
+        const res = await fetch(req);
         const c = await caches.open(CACHE);
         c.put(req, res.clone());
+        return res;
+      } catch (err) {
+        const cached = await caches.match(req);
+        if(cached) return cached;
+        if(req.mode === 'navigate'){
+          const fallback = await caches.match('./index.html');
+          if(fallback) return fallback;
+        }
+        throw err;
       }
-      return res;
-    } catch (err) {
-      if(req.mode === 'navigate'){
-        const fallback = await caches.match('./index.html');
-        if(fallback) return fallback;
-      }
-      throw err;
-    }
-  })());
+    })());
+  } else {
+    // 외부(폰트 등): 캐시 우선
+    e.respondWith(caches.match(req).then(c => c || fetch(req)));
+  }
 });

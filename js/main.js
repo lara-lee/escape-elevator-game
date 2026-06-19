@@ -36,6 +36,7 @@ window.addEventListener('DOMContentLoaded', () => {
     if(game.state.screen !== 'playing') return;
     game.paused = on;
     UI.setPaused(on);
+    if(on) Sound.stopBgm(); else Sound.startBgm();   // 일시정지 시 배경음도 멈춤/재개
   }
 
   // 메인 → 단계 선택
@@ -50,42 +51,51 @@ window.addEventListener('DOMContentLoaded', () => {
   $('btnResume').addEventListener('click', () => setPause(false));
   $('btnPauseHome').addEventListener('click', () => { setPause(false); game.toMenu(); UI.showScreen('menu'); });
 
-  // PWA 설치 버튼
+  // PWA 설치 버튼 (항상 표시)
   let deferredPrompt = null;
   const btnInstall = $('btnInstall');
-  window.addEventListener('beforeinstallprompt', (e) => {
-    e.preventDefault(); deferredPrompt = e;
-    if(btnInstall) btnInstall.style.display = 'inline-block';
-  });
-  if(btnInstall){
-    btnInstall.addEventListener('click', async () => {
-      if(!deferredPrompt) return;
+  window.addEventListener('beforeinstallprompt', (e) => { e.preventDefault(); deferredPrompt = e; });
+  btnInstall.addEventListener('click', async () => {
+    if(deferredPrompt){
       deferredPrompt.prompt();
       await deferredPrompt.userChoice;
-      deferredPrompt = null; btnInstall.style.display = 'none';
-    });
-  }
-  window.addEventListener('appinstalled', () => { if(btnInstall) btnInstall.style.display = 'none'; });
+      deferredPrompt = null;
+    } else {
+      alert('앱 설치 방법\n\n• PC 크롬/엣지: 주소창 오른쪽 설치(⊕) 아이콘 또는 ⋮ 메뉴 → "앱 설치"\n• 안드로이드 크롬: ⋮ → "앱 설치"\n• 아이폰 사파리: 공유 → "홈 화면에 추가"\n\n※ file:// 가 아니라 localhost 또는 https 주소에서만 됩니다.');
+    }
+  });
+  // 이미 설치되어 실행 중이면 버튼 숨김
+  if(window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) btnInstall.style.display = 'none';
+  window.addEventListener('appinstalled', () => { btnInstall.style.display = 'none'; });
 
   // 단계 카드 → 게임 시작
   document.querySelectorAll('.stage-card').forEach(card => {
     card.addEventListener('click', () => game.startGame(parseInt(card.dataset.stage, 10)));
   });
 
-  // 결과 화면 버튼
+  // 결과 화면 버튼 (배경음 재개)
   $('btnNext').addEventListener('click', () => {
     const s = game.state;
+    Sound.startBgm();
     if(s.practice){ UI.renderStageSelect(); UI.showScreen('stage'); }
     else if(s.stageId < 5){ game.startGame(s.stageId + 1); }
   });
-  $('btnRetry').addEventListener('click', () => game.startGame(game.state.stageId));
-  $('btnHome').addEventListener('click', () => { game.toMenu(); UI.showScreen('menu'); });
+  $('btnRetry').addEventListener('click', () => { Sound.startBgm(); game.startGame(game.state.stageId); });
+  $('btnHome').addEventListener('click', () => { Sound.startBgm(); game.toMenu(); UI.showScreen('menu'); });
 
   // 핵심 조작: pointerdown (터치+마우스 통합)
   $('btnClose').addEventListener('pointerdown', (ev) => {
     ev.preventDefault();
     if(game.paused) return;
     game.pressClose();
+  });
+
+  // 보너스 하트 탭해서 획득
+  $('lane').addEventListener('pointerdown', (ev) => {
+    const node = ev.target.closest('.heart-item');
+    if(!node || game.paused) return;
+    ev.preventDefault();
+    game.collectHeart(parseInt(node.dataset.id, 10));
   });
 
   // 키보드: Esc/P 일시정지, Space/↓/Enter 문 닫기
