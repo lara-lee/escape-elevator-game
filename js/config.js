@@ -5,7 +5,7 @@ const CONFIG = {
   DEPART_TIME: 3.0,         // 문 닫힘 유지 → 출발 (F-003)
   DEPART_ANIM: 0.85,        // 출발/상승 연출 시간(초)
   LIVES: 3,                 // 기본 하트 수
-  HEART_RECOVER: 10,        // 출발 성공 N회마다 하트 1개 회복(최대치까지)
+  HEART_FALL: 0.35,         // 보너스 하트 낙하 속도(위→아래, 화면 비율/초)
   SUCCESS_SCORE: 100,       // 출발 성공 점수 (F-008)
   COMBO_BONUS: 30,          // 콤보 보너스/연속 성공 (F-013)
   DELAY_TIME: 1.5,          // 택배 기사 '지연' 효과(닫기 잠금, 초)
@@ -30,12 +30,13 @@ const CONFIG = {
   // 단계 1~4 (spawn 간격·속도 배수가 다름). 층수 난이도는 이 위에 누적.
   //  floors: 빌딩 총 층수(꼭대기 시작 → 1층 로비 도착 시 퇴근 성공)
   //  recovers: 하강 도중 하트를 채워주는 횟수(균등 체크포인트, 최대치까지)
+  //  floors 20층 통일, 난이도(생성주기·속도)로 차등. recovers = 하트 회복 횟수(단계 번호)
   STAGES: [
-    { id:1, label:'1단계', name:'느긋한 오후', emoji:'☕', color:'#10b981', floors:10, recovers:1, spawnMin:2.3,  spawnMax:3.9, speedMul:0.85, lives:3, dots:1 },
-    { id:2, label:'2단계', name:'평범한 퇴근', emoji:'🚶', color:'#3b82f6', floors:20, recovers:2, spawnMin:1.7,  spawnMax:3.1, speedMul:1.00, lives:3, dots:2 },
-    { id:3, label:'3단계', name:'러시아워',   emoji:'🏃', color:'#f59e0b', floors:30, recovers:3, spawnMin:1.25, spawnMax:2.4, speedMul:1.20, lives:3, dots:3 },
-    { id:4, label:'4단계', name:'야근 지옥',   emoji:'🔥', color:'#ef4444', floors:40, recovers:4, spawnMin:0.95, spawnMax:1.8, speedMul:1.45, lives:3, dots:4 },
-    { id:5, label:'5단계', name:'대표님 등장', emoji:'😈', color:'#a855f7', floors:50, recovers:5, spawnMin:0.8,  spawnMax:1.6, speedMul:1.6,  lives:3, dots:5, extra:['ceo'] },
+    { id:1, label:'1단계', name:'느긋한 오후', emoji:'☕', color:'#10b981', floors:20, recovers:1, spawnMin:2.3,  spawnMax:3.7, speedMul:0.85, lives:3, dots:1 },
+    { id:2, label:'2단계', name:'평범한 퇴근', emoji:'🚶', color:'#3b82f6', floors:20, recovers:2, spawnMin:1.7,  spawnMax:3.0, speedMul:1.05, lives:3, dots:2 },
+    { id:3, label:'3단계', name:'러시아워',   emoji:'🏃', color:'#f59e0b', floors:20, recovers:3, spawnMin:1.2,  spawnMax:2.3, speedMul:1.30, lives:3, dots:3 },
+    { id:4, label:'4단계', name:'야근 지옥',   emoji:'🔥', color:'#ef4444', floors:20, recovers:4, spawnMin:0.85, spawnMax:1.7, speedMul:1.60, lives:4, dots:4 },
+    { id:5, label:'5단계', name:'대표님 등장', emoji:'😈', color:'#a855f7', floors:20, recovers:5, spawnMin:0.7,  spawnMax:1.4, speedMul:1.9,  lives:5, dots:5, extra:['ceo'] },
   ],
 
   // 연습 모드 — 위험 미리보기(빨간 표시) 켜짐, 쉬운 설정

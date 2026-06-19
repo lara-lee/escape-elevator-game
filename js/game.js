@@ -45,10 +45,12 @@ class Game {
       departTimer: 0,
       delayTimer: 0,
       passengers: [],
+      items: [],                     // 보너스 하트 아이템 {id,pos}
       spawnTimer: 0,
       gameOver: false,
       newRecord: false,
       best: 0,
+      bestFloor: 0,                  // 단계별 최고 도달 층(가장 깊이 내려간 층)
       // 통계
       fails: 0,
       successes: 0,
@@ -68,6 +70,7 @@ class Game {
     this.paused = false;
     this.state = this.freshState();
     this.state.best = Storage.getBest(st.id);
+    this.state.bestFloor = Storage.getBestFloor(st.id);
     this.state.screen = 'playing';
     this.state.introTimer = CONFIG.INTRO_TIME;   // 시작 카운트다운
     this.state.spawnTimer = this.spawnInterval();
@@ -135,6 +138,16 @@ class Game {
     s.passengers = remain;
     if(s.gameOver) return;
 
+    // 보너스 하트 낙하(바닥 도달 시 미획득 → 사라짐)
+    if(s.items.length){
+      const ri = [];
+      for(const it of s.items){
+        it.y += CONFIG.HEART_FALL * dt;
+        if(it.y < 1) ri.push(it);
+      }
+      s.items = ri;
+    }
+
     // F-003 출발 판정
     if(s.door === 'closing'){
       s.progress += dt;
@@ -165,11 +178,8 @@ class Game {
     const gained = CONFIG.SUCCESS_SCORE + bonus;
     s.score += gained;
 
-    let recovered = false;
-    if(s.heartCheckpoints.indexOf(s.successes) !== -1 && s.lives < s.maxLives){
-      s.lives++;
-      recovered = true;
-    }
+    // 체크포인트 도달 시 보너스 하트 아이템 등장(탭해서 획득)
+    if(s.heartCheckpoints.indexOf(s.successes) !== -1) this.spawnHeart();
 
     const reachedLobby = s.floor <= 1;
     if(reachedLobby){ s.floor = 1; s.won = true; }
@@ -177,7 +187,7 @@ class Game {
     s.door = 'departing';
     s.departTimer = CONFIG.DEPART_ANIM;
     s.progress = CONFIG.DEPART_TIME;
-    this.events.push({ type:'success', gained, combo:s.combo, floor:s.floor, recovered, last:reachedLobby });
+    this.events.push({ type:'success', gained, combo:s.combo, floor:s.floor, last:reachedLobby });
   }
 
   // F-010 종료 (won=true: 퇴근 성공 / false: 야근 실패) + F-012 단계별 최고 점수
@@ -187,7 +197,7 @@ class Game {
     s.won = won;
     s.screen = 'gameover';
     s.door = 'open';
-    if(!s.practice){                       // 연습은 최고 점수 저장 안 함
+    if(!s.practice){                       // 연습은 기록 저장 안 함
       const prev = Storage.getBest(s.stageId);
       if(s.score > prev){
         s.best = s.score;
@@ -196,8 +206,24 @@ class Game {
       } else {
         s.best = prev;
       }
+      // 최고 도달 층(가장 낮은=깊은 층) 갱신
+      const pf = Storage.getBestFloor(s.stageId);
+      if(!pf || s.floor < pf){ Storage.setBestFloor(s.stageId, s.floor); s.bestFloor = s.floor; }
+      else { s.bestFloor = pf; }
     }
     this.events.push({ type:'gameover', won });
+  }
+
+  // 보너스 하트 아이템 (하늘에서 낙하 — x: 가로위치, y: 0=위 → 1=바닥)
+  spawnHeart(){ this.state.items.push({ id: this._id++, x: 0.1 + Math.random() * 0.8, y: 0 }); }
+
+  collectHeart(id){
+    const s = this.state;
+    const i = s.items.findIndex(it => it.id === id);
+    if(i < 0) return;
+    s.items.splice(i, 1);
+    if(s.lives < s.maxLives){ s.lives++; this.events.push({ type:'heartget', full:false }); }
+    else { s.score += 50; this.events.push({ type:'heartget', full:true }); }
   }
 
   // ---------- 헬퍼 ----------
