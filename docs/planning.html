@@ -1,7 +1,5 @@
 <!DOCTYPE html>
-<html lang="ko">
-<head>
-<meta charset="UTF-8">
+<html lang="ko"><head><meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>퇴근 엘리베이터 — 기획안</title>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -9,7 +7,8 @@
 :root{--bg:#fff;--surface:#f8f9fa;--text:#1a1a2e;--border:#e2e8f0;--mvp-yes:#10b981;--mvp-no:#ef4444;--mvp-partial:#f59e0b;--accent:#3b82f6;--radius:10px}
 [data-theme="dark"]{--bg:#0f0f23;--surface:#1a1a2e;--text:#e2e8f0;--border:#2d2d44}
 *{margin:0;padding:0;box-sizing:border-box}
-body{font-family:'Noto Sans KR',sans-serif;font-size:15px;line-height:1.7;color:var(--text);background:var(--bg);transition:background .3s,color .3s}
+html,body{height:100%}
+body{font-family:'Noto Sans KR',system-ui,sans-serif;font-size:15px;line-height:1.7;color:var(--text);background:var(--bg);transition:background .3s,color .3s}
 code,.mono{font-family:'IBM Plex Mono',monospace}
 .header{padding:24px 32px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;position:sticky;top:0;background:var(--bg);z-index:10}
 .header h1{font-size:22px;font-weight:700}
@@ -24,11 +23,8 @@ code,.mono{font-family:'IBM Plex Mono',monospace}
 .doc h1:first-child{margin-top:0}
 .doc h2{font-size:20px;font-weight:700;margin:30px 0 12px;padding-bottom:6px;border-bottom:2px solid var(--border)}
 .doc h3{font-size:16px;font-weight:700;margin:22px 0 8px;color:var(--accent)}
-.doc p{margin:10px 0}
-.doc ul,.doc ol{margin:10px 0;padding-left:24px}
-.doc li{margin:4px 0}
-.doc a{color:var(--accent);text-decoration:none}
-.doc a:hover{text-decoration:underline}
+.doc p{margin:10px 0}.doc ul,.doc ol{margin:10px 0;padding-left:24px}.doc li{margin:4px 0}
+.doc a{color:var(--accent);text-decoration:none}.doc a:hover{text-decoration:underline}
 .doc hr{border:0;border-top:1px solid var(--border);margin:28px 0}
 .doc table{width:100%;border-collapse:collapse;font-size:13.5px;margin:14px 0}
 .doc th,.doc td{padding:9px 12px;border:1px solid var(--border);text-align:left;vertical-align:top}
@@ -38,399 +34,273 @@ code,.mono{font-family:'IBM Plex Mono',monospace}
 .doc pre{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:14px 16px;overflow-x:auto;margin:14px 0}
 .doc pre code{background:none;border:0;padding:0;font-size:13px;line-height:1.6}
 .doc blockquote{margin:14px 0;padding:10px 16px;border-left:4px solid var(--accent);background:var(--surface);border-radius:0 8px 8px 0;font-size:14px}
-.doc blockquote p{margin:4px 0}
 @media(max-width:768px){.header,.docnav{padding-left:16px;padding-right:16px}.doc{padding:18px}}
-</style>
-</head>
-<body>
-<div class="header">
-  <div>
-    <h1>퇴근 엘리베이터 <span style="font-size:13px;opacity:.6">Escape Elevator</span></h1>
-    <div class="header-meta"><span>기획안</span><span class="mono">v1.0</span><span>2026-06-19</span></div>
-  </div>
-  <button class="theme-toggle" onclick="toggleTheme()">🌓 테마</button>
-</div>
+</style></head><body>
+<div class="header"><div><h1>퇴근 엘리베이터 <span style="font-size:13px;opacity:.6">Escape Elevator</span></h1>
+<div class="header-meta"><span>기획안</span><span class="mono">v2.0</span><span>2026-06-19</span></div></div>
+<button class="theme-toggle" onclick="toggleTheme()">🌓 테마</button></div>
 <div class="docnav"><a href="planning.html" class="active">기획안</a><a href="기능명세서.html">기능 명세서</a><a href="user-flow.html">사용자 흐름</a></div>
 <div class="doc">
 <h1>기획안</h1>
-<h1>1. 프로젝트 개요</h1>
-<h3>프로젝트명</h3>
-<p>퇴근 엘리베이터 (Escape Elevator)</p>
-<h3>장르</h3>
-<p>캐주얼 웹게임 / 아케이드 / 코미디</p>
-<h3>플랫폼</h3>
-<ul>
-<li>Web Browser</li>
-<li>PC 우선</li>
-<li>모바일 대응 가능</li>
-</ul>
-<h3>목표</h3>
-<p>퇴근을 위해 엘리베이터를 출발시키려 하지만 끊임없이 탑승하려는 사람들 때문에 방해받는다.
-플레이어는 스트레스를 관리하며 최대한 많은 층을 이동해야 한다.</p>
-<hr />
-<h1>2. 게임 컨셉</h1>
-<h2>한 줄 소개</h2>
-<p>"오늘도 퇴근에 실패했습니다."
-문이 닫히기 직전마다 사람들이 뛰어오는 현실을 게임으로 구현한 캐주얼 웹게임.</p>
-<h2>핵심 재미</h2>
-<ul>
-<li>반복적인 도전</li>
-<li>랜덤 이벤트</li>
-<li>현실 공감</li>
-<li>점수 경쟁</li>
-<li>짧은 플레이 타임</li>
-</ul>
-<hr />
-<h1>3. 게임 목표</h1>
-<h2>승리 조건</h2>
-<p>없음
-최대한 높은 점수를 획득하는 것이 목표</p>
-<h2>패배 조건</h2>
-<p>스트레스 게이지가 100% 도달</p>
-<hr />
-<h1>4. 게임 흐름</h1>
-<p>Start
-↓
-엘리베이터 대기
-↓
-문닫기 버튼 클릭
-↓
-문 닫힘 시도
-↓
-사람 등장 여부 판정
-↓
-성공
-→ 층수 증가
-실패
-→ 문 재개방
-↓
-스트레스 증가
-↓
-반복
-↓
-스트레스 100%
-↓
-게임 오버</p>
-<hr />
-<h1>5. 기능 명세서</h1>
-<h2>F-001 게임 시작</h2>
-<h3>설명</h3>
-<p>게임을 초기 상태로 시작한다.</p>
-<h3>입력</h3>
-<ul>
-<li>시작 버튼 클릭</li>
-</ul>
-<h3>처리</h3>
-<ul>
-<li>층수 = 1</li>
-<li>점수 = 0</li>
-<li>스트레스 = 0</li>
-<li>문 상태 = 열림</li>
-</ul>
-<h3>출력</h3>
-<p>게임 화면 진입</p>
-<hr />
-<h2>F-002 문닫기</h2>
-<h3>설명</h3>
-<p>플레이어가 문닫기 버튼을 누른다.</p>
-<h3>입력</h3>
-<p>문닫기 버튼 클릭</p>
-<h3>처리</h3>
-<p>문 닫힘 애니메이션 시작</p>
-<h3>출력</h3>
-<p>문 상태 변경</p>
-<hr />
-<h2>F-003 출발 판정</h2>
-<h3>설명</h3>
-<p>문이 일정 시간 동안 방해받지 않으면 출발</p>
-<h3>조건</h3>
-<ul>
-<li>문 닫힘 유지 3초</li>
-</ul>
-<h3>처리</h3>
-<ul>
-<li>층수 +1</li>
-<li>점수 +100</li>
-<li>스트레스 -10</li>
-</ul>
-<h3>출력</h3>
-<p>다음 층 이동</p>
-<hr />
-<h2>F-004 승객 생성</h2>
-<h3>설명</h3>
-<p>랜덤한 승객이 생성된다.</p>
-<h3>생성 주기</h3>
-<p>1~5초 랜덤</p>
-<h3>위치</h3>
-<p>화면 우측</p>
-<h3>출력</h3>
-<p>승객 등장</p>
-<hr />
-<h2>F-005 승객 이동</h2>
-<h3>설명</h3>
-<p>승객이 엘리베이터 방향으로 이동한다.</p>
-<h3>처리</h3>
-<p>지정 속도로 이동</p>
-<h3>출력</h3>
-<p>엘리베이터 도착 여부 판정</p>
-<hr />
-<h2>F-006 승객 충돌</h2>
-<h3>설명</h3>
-<p>승객이 엘리베이터에 도착한다.</p>
-<h3>처리</h3>
-<ul>
-<li>문 재개방</li>
-<li>스트레스 증가</li>
-</ul>
-<h3>출력</h3>
-<p>출발 실패</p>
-<hr />
-<h2>F-007 스트레스 시스템</h2>
-<h3>설명</h3>
-<p>플레이어의 스트레스 수치 관리</p>
-<h3>최소값</h3>
-<p>0</p>
-<h3>최대값</h3>
-<p>100</p>
-<h3>증가 규칙</h3>
+<h2>1. 프로젝트 개요</h2>
 <table>
 <thead>
 <tr>
-<th>이벤트</th>
-<th>증가량</th>
+<th>항목</th>
+<th>내용</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>일반 사원</td>
-<td>+5</td>
+<td>프로젝트명</td>
+<td>퇴근 엘리베이터 (Escape Elevator)</td>
 </tr>
 <tr>
-<td>인턴</td>
-<td>+3</td>
+<td>장르</td>
+<td>캐주얼 · 아케이드 · 타이밍</td>
 </tr>
 <tr>
-<td>택배 기사</td>
-<td>+10</td>
+<td>플랫폼</td>
+<td>Web (PWA — 설치 · 오프라인 지원)</td>
 </tr>
 <tr>
-<td>부장님</td>
-<td>+20</td>
+<td>기술</td>
+<td>HTML5 / CSS3 / Vanilla JS / LocalStorage</td>
+</tr>
+<tr>
+<td>렌더링</td>
+<td>DOM + CSS</td>
+</tr>
+<tr>
+<td>최종 수정</td>
+<td>2026-06-19 (v2.0 — 하트·단계·하강 개편)</td>
 </tr>
 </tbody>
 </table>
-<h3>감소 규칙</h3>
-<table>
-<thead>
-<tr>
-<th>이벤트</th>
-<th>감소량</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>출발 성공</td>
-<td>-10</td>
-</tr>
-</tbody>
-</table>
-<hr />
-<h2>F-008 점수 시스템</h2>
-<h3>설명</h3>
-<p>출발 성공 시 점수 획득</p>
-<h3>계산식</h3>
-<p>점수 += 100</p>
-<h3>추가 보너스</h3>
-<p>연속 성공 시 콤보 점수 적용 가능</p>
-<hr />
-<h2>F-009 층수 시스템</h2>
-<h3>설명</h3>
-<p>엘리베이터가 출발할 때마다 층수 증가</p>
-<h3>계산식</h3>
-<p>currentFloor += 1</p>
-<hr />
-<h2>F-010 게임 오버</h2>
-<h3>조건</h3>
-<p>스트레스 &gt;= 100</p>
-<h3>처리</h3>
-<p>게임 종료</p>
-<h3>출력</h3>
-<p>결과 화면 표시</p>
-<hr />
-<h1>6. 승객 명세</h1>
-<h2>일반 사원</h2>
-<h3>등장 확률</h3>
-<p>60%</p>
-<h3>효과</h3>
+<h2>2. 게임 컨셉</h2>
+<p>퇴근하려고 엘리베이터를 타지만, 문이 닫히기 직전 사람들이 뛰어들어 방해한다.
+빈 틈을 노려 문을 닫고 <strong>한 층씩 내려가</strong> 1층 로비에 도착하면 퇴근 성공.</p>
+<h2>3. 게임 목표</h2>
 <ul>
-<li>문 재개방</li>
-<li>스트레스 +5</li>
+<li><strong>승리 조건</strong>: 1층(로비) 도착 → 퇴근 성공</li>
+<li><strong>패배 조건</strong>: 하트 3개 모두 소진 → 야근(게임 오버)</li>
+<li>빌딩 꼭대기 층에서 시작해 1층까지 하강한다.</li>
 </ul>
 <hr />
-<h2>인턴</h2>
-<h3>등장 확률</h3>
-<p>20%</p>
-<h3>효과</h3>
-<ul>
-<li>문 재개방</li>
-<li>스트레스 +3</li>
-</ul>
-<hr />
-<h2>택배 기사</h2>
-<h3>등장 확률</h3>
-<p>10%</p>
-<h3>효과</h3>
-<ul>
-<li>3초 지연</li>
-<li>스트레스 +10</li>
-</ul>
-<hr />
-<h2>부장님</h2>
-<h3>등장 확률</h3>
-<p>10%</p>
-<h3>효과</h3>
-<ul>
-<li>문 강제 개방</li>
-<li>스트레스 +20</li>
-</ul>
-<hr />
-<h1>7. 화면 설계</h1>
-<h2>메인 화면</h2>
-<h3>구성</h3>
-<ul>
-<li>게임 제목</li>
-<li>시작 버튼</li>
-</ul>
-<hr />
-<h2>게임 화면</h2>
-<h3>구성</h3>
-<ul>
-<li>현재 층수</li>
-<li>현재 점수</li>
-<li>스트레스 게이지</li>
-<li>엘리베이터</li>
-<li>승객 영역</li>
-<li>문닫기 버튼</li>
-</ul>
-<hr />
-<h2>결과 화면</h2>
-<h3>구성</h3>
-<ul>
-<li>최종 점수</li>
-<li>도달 층수</li>
-<li>게임 통계</li>
-<li>다시하기 버튼</li>
-</ul>
-<hr />
-<h1>8. 데이터 구조</h1>
-<h2>GameState</h2>
-<pre><code class="language-javascript">{
-  score: 0,
-  floor: 1,
-  stress: 0,
-  gameOver: false
-}
-</code></pre>
-<h2>Passenger</h2>
-<pre><code class="language-javascript">{
-  type: &quot;employee&quot;,
-  speed: 3,
-  stressValue: 5
-}
+<h2>4. 게임 흐름</h2>
+<pre><code>단계 선택
+↓
+3 · 2 · 1 · START (시작 카운트다운)
+↓
+엘리베이터 대기(문 열림)  ← 승객들이 우측에서 접근
+↓
+문 닫기 (버튼/Space/↓/Enter)
+↓
+3초 무방해 유지?
+  ├─ 성공 → 한 층 하강 · 점수 +100 · (콤보)
+  └─ 실패(승객 충돌) → 문 재개방 · 하트 −1
+↓
+1층 로비 도착 → 퇴근 성공! / 하트 0 → 게임 오버
 </code></pre>
 <hr />
-<h1>9. 기술 스택</h1>
-<h2>Frontend</h2>
-<ul>
-<li>HTML5</li>
-<li>CSS3</li>
-<li>JavaScript (Vanilla)</li>
-</ul>
-<h2>저장소</h2>
-<ul>
-<li>LocalStorage</li>
-</ul>
-<h2>배포</h2>
-<ul>
-<li>GitHub Pages</li>
-<li>Vercel</li>
-<li>Netlify</li>
-</ul>
-<hr />
-<h1>10. MVP 범위</h1>
-<p>필수 기능
-- 게임 시작
-- 문닫기 버튼
-- 랜덤 승객 생성
-- 층수 증가
-- 점수 시스템
-- 스트레스 시스템
-- 게임 오버
-- 다시하기</p>
-<p>예상 개발 기간
-- 1~2일</p>
-<hr />
-<h1>11. 개발 단계 &amp; PWA 전환 계획</h1>
-<p>핵심 전제: <strong>PWA는 웹앱을 다시 만드는 것이 아니라 "웹 + 얇은 레이어(manifest + service worker)"</strong> 다.
-따라서 1차(웹)를 PWA를 염두에 두고 만들면, 2차(앱)는 재작업이 아니라 추가 작업만으로 끝난다.</p>
-<h2>11.1 단계 구성</h2>
+<h2>5. 단계</h2>
+<p>모든 단계 <strong>20층 통일</strong>. 난이도(생성 주기·속도)로 차등하고, 어려운 단계일수록 하트 회복을 더 준다. 진행도(내려간 층수)에 따라 추가 가속.</p>
 <table>
 <thead>
 <tr>
 <th>단계</th>
-<th>목표</th>
-<th>산출물</th>
+<th>빌딩</th>
+<th>생성 주기(초)</th>
+<th>속도 배수</th>
+<th>보너스 하트</th>
+<th>비고</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>1차 (Web)</td>
-<td>MVP 게임 완성 + PWA 준비 항목 반영</td>
-<td>HTTPS로 배포된 플레이 가능한 웹게임</td>
+<td>1단계 느긋한 오후</td>
+<td>20층</td>
+<td>2.3~3.7</td>
+<td>0.85</td>
+<td>❤️×1</td>
+<td>드뭄·느림</td>
 </tr>
 <tr>
-<td>2차 (PWA)</td>
-<td>설치형 앱 + 오프라인 플레이 + 모바일 UX</td>
-<td>홈 화면 설치 가능한 PWA</td>
+<td>2단계 평범한 퇴근</td>
+<td>20층</td>
+<td>1.7~3.0</td>
+<td>1.05</td>
+<td>❤️×2</td>
+<td>표준</td>
 </tr>
 <tr>
-<td>3차 (선택)</td>
-<td>앱스토어 출시</td>
-<td>TWA(Android) / Capacitor 래핑</td>
+<td>3단계 러시아워</td>
+<td>20층</td>
+<td>1.2~2.3</td>
+<td>1.30</td>
+<td>❤️×3</td>
+<td>자주·빠르게</td>
+</tr>
+<tr>
+<td>4단계 야근 지옥</td>
+<td>20층</td>
+<td>0.85~1.7</td>
+<td>1.60</td>
+<td>❤️×4</td>
+<td>쉴 틈 없음</td>
+</tr>
+<tr>
+<td>5단계 대표님 등장</td>
+<td>20층</td>
+<td>0.7~1.4</td>
+<td>1.90</td>
+<td>❤️×5</td>
+<td><strong>대표 출현</strong></td>
+</tr>
+<tr>
+<td>연습 게임</td>
+<td>6층</td>
+<td>2.8~4.4</td>
+<td>0.80</td>
+<td>-</td>
+<td><strong>위험 미리보기</strong> ON, 하트 5</td>
 </tr>
 </tbody>
 </table>
-<h2>11.2 1차(웹)에서 미리 지켜야 할 설계 원칙</h2>
-<p>PWA 전환 비용을 0에 가깝게 만드는 핵심 준비 항목.</p>
+<hr />
+<h2>6. 승객</h2>
+<table>
+<thead>
+<tr>
+<th>승객</th>
+<th>등장 확률</th>
+<th>속도</th>
+<th>특수효과</th>
+<th>충돌 시</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>🎓 인턴</td>
+<td>20%</td>
+<td>느림(0.13)</td>
+<td>-</td>
+<td>하트 −1</td>
+</tr>
+<tr>
+<td>🧑‍💼 사원</td>
+<td>60%</td>
+<td>보통(0.16)</td>
+<td>-</td>
+<td>하트 −1</td>
+</tr>
+<tr>
+<td>📦 택배</td>
+<td>10%</td>
+<td>빠름(0.20)</td>
+<td>닫기 잠금(지연 1.5초)</td>
+<td>하트 −1</td>
+</tr>
+<tr>
+<td>👔 부장</td>
+<td>10%</td>
+<td>매우 빠름(0.25)</td>
+<td>강제 개방</td>
+<td>하트 −1</td>
+</tr>
+<tr>
+<td>🕴️ 대표</td>
+<td>5단계 한정(약 13%)</td>
+<td>초고속(0.34)</td>
+<td>강제 개방</td>
+<td>하트 −1</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>하트 소모는 전부 −1로 동일. 차이는 속도·특수효과·등장 단계.
+문이 열려 있을 때 도착한 승객은 그냥 타고 사라져 무해(닫는 중 도착만 실패).</p>
+</blockquote>
+<hr />
+<h2>7. 하트(생명) 시스템</h2>
 <ul>
-<li><strong>모바일 우선 + 터치 입력</strong>: <code>click</code> 대신 <code>pointerdown</code>(터치+마우스 통합) 사용. 핵심 조작이 "문닫기 버튼"이므로 필수.</li>
-<li><strong>로직과 화면 분리</strong>: <code>state</code>(score / floor / stress / passengers) ↔ 렌더링(DOM 갱신)을 분리해 이식성·테스트성 확보.</li>
-<li><strong>저장소 추상화</strong>: <code>storage.js</code> 한 곳에서만 LocalStorage 접근 → 추후 IndexedDB 교체 시 한 파일만 수정.</li>
-<li><strong>에셋·경로 로컬화</strong>: 외부 CDN·절대경로 금지(상대경로 사용) → 서비스워커 오프라인 캐싱 보장.</li>
-<li><strong>게임 루프</strong>: <code>requestAnimationFrame</code> + delta time 기반 → 기기별 속도 균일.</li>
-<li><strong>뷰포트 고정</strong>: <code>viewport</code> meta로 확대·스크롤 차단, <code>100dvh</code> 사용(모바일 주소창 대응).</li>
+<li>시작 하트 <strong>3개</strong>(4·5단계는 4·5개, 연습 5개). 충돌 1회당 <strong>−1</strong>, <strong>0개 → 게임 오버</strong>.</li>
+<li><strong>보너스 하트</strong>: 단계 체크포인트마다 ❤️ 하트가 <strong>하늘에서 낙하</strong> → <strong>탭/터치로 잡으면 +1</strong>(최대치까지, 가득이면 +50점).</li>
+<li>등장 횟수 = 단계 번호 (1단계 1개 … 5단계 5개). <strong>못 잡으면 바닥에 떨어져 사라짐</strong>(이월 없음).</li>
 </ul>
-<h2>11.3 2차(PWA)에서 추가하는 것</h2>
+<h2>8. 점수 · 콤보</h2>
 <ul>
-<li><code>manifest.webmanifest</code>: <code>name</code>, <code>short_name</code>, <code>display: standalone</code>, <code>orientation: portrait</code>, <code>theme_color</code>, 아이콘 세트(192/512)</li>
-<li><strong>Service Worker</strong>: cache-first 전략 → 오프라인 플레이 지원</li>
-<li>앱 아이콘 + 스플래시 스크린</li>
-<li><code>beforeinstallprompt</code> 후킹 → "홈 화면에 추가" 설치 유도 UI</li>
-<li>앱 감성 폴리시(선택): 진동(Vibration API, 충돌 시), 화면 꺼짐 방지(Wake Lock), 풀스크린</li>
+<li>출발 성공 시 <strong>+100</strong>, 연속 성공마다 <strong>콤보 보너스 +30</strong>.</li>
+<li>실패하면 콤보 초기화.</li>
+<li><strong>단계별 최고 점수</strong>를 LocalStorage에 저장(연습은 저장 안 함).</li>
 </ul>
-<h2>11.4 기술 결정</h2>
+<hr />
+<h2>9. 화면 구성</h2>
+<table>
+<thead>
+<tr>
+<th>화면</th>
+<th>구성</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>메인</td>
+<td>제목 · 규칙 · 승객 범례 · [게임 시작 / 연습 게임]</td>
+</tr>
+<tr>
+<td>단계 선택</td>
+<td>1~5단계 카드(난이도·빌딩층·최고점수)</td>
+</tr>
+<tr>
+<td>게임</td>
+<td>층수 · 점수 · 콤보 · 하트 · 하강 진행 레일 · 엘리베이터 · 승객 · 문닫기</td>
+</tr>
+<tr>
+<td>결과</td>
+<td>승리/실패 · 최종 점수 · 통계 · [다음 단계 / 다시하기 / 메인]</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>10. 데이터 구조</h2>
+<h3>GameState</h3>
+<pre><code class="language-javascript">{
+  screen: 'menu',      // menu | stage | playing | gameover
+  stageId, totalFloors, floor,   // floor: 꼭대기→1 로 하강
+  practice, introTimer, won,
+  score, combo, lives, maxLives,
+  door: 'open',        // open | closing | departing
+  progress, departTimer, delayTimer,
+  passengers: [], spawnTimer,
+  heartCheckpoints: [],
+  fails, successes, elapsed, best, gameOver
+}
+</code></pre>
+<h3>Passenger</h3>
+<pre><code class="language-javascript">{ id, type, label, emoji, color, trait, speed, effect, pos, danger }
+</code></pre>
+<hr />
+<h2>11. 기술 · 설계 원칙</h2>
 <ul>
-<li><strong>렌더링: Canvas 대신 DOM + CSS 채택.</strong> 이 게임 규모·캐주얼 성격·짧은 개발기간엔 DOM이 더 빠르고 PWA/반응형과 잘 맞는다.</li>
-<li><strong>배포: HTTPS 필수</strong>(PWA 요구사항). GitHub Pages / Vercel / Netlify 모두 기본 HTTPS 제공.</li>
+<li>HTML5 / CSS3 / Vanilla JS, DOM + CSS 렌더링.</li>
+<li><strong>로직/화면 분리</strong>(game.js ↔ ui.js), <strong>저장소 추상화</strong>(storage.js).</li>
+<li><strong>pointer 입력</strong>(터치+마우스) + 키보드(Space/↓/Enter, Esc/P).</li>
+<li><strong>requestAnimationFrame + delta time</strong> 루프(백그라운드 dt 클램프).</li>
+<li>난이도는 <strong>진행도(내려간 층수)</strong> 기준으로 가속.</li>
+</ul>
+<h2>12. PWA</h2>
+<ul>
+<li><code>manifest.webmanifest</code> + Service Worker(<code>sw.js</code>, <strong>network-first</strong> → 온라인 최신 / 오프라인 캐시).</li>
+<li>설치 아이콘 192/512, apple-touch, favicon. <code>localhost</code>·HTTPS에서 설치/오프라인.</li>
+</ul>
+<h2>13. 사운드</h2>
+<ul>
+<li><code>sounds/</code> mp3 매핑(<code>js/audio.js</code>). <strong>효과음 🔊 / 배경음 🎵 각각 토글</strong>(설정 저장).</li>
+<li>이벤트: 시작 카운트다운 · 문 닫기 · 실패 · 하트 획득 · 클리어 · 게임오버 · 버튼.</li>
 </ul>
 </div>
 <script>
-function toggleTheme(){
-  const el=document.documentElement;
-  el.setAttribute('data-theme', el.getAttribute('data-theme')==='dark'?'light':'dark');
-  try{localStorage.setItem('ee-theme', el.getAttribute('data-theme'));}catch(e){}
-}
-(function(){try{const t=localStorage.getItem('ee-theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
-</script>
-</body>
-</html>
+function toggleTheme(){var e=document.documentElement;e.setAttribute('data-theme',e.getAttribute('data-theme')==='dark'?'light':'dark');try{localStorage.setItem('ee-theme',e.getAttribute('data-theme'))}catch(x){}}
+(function(){try{var t=localStorage.getItem('ee-theme');if(t)document.documentElement.setAttribute('data-theme',t)}catch(x){}})();
+</script></body></html>

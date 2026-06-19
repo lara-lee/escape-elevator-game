@@ -3,375 +3,208 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>퇴근 엘리베이터 — 사용자 흐름 & 기능 구성</title>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<title>퇴근 엘리베이터 — 사용자 흐름</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700;900&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#fff;--surface:#f8f9fa;--text:#1a1a2e;--border:#e2e8f0;--mvp-yes:#10b981;--mvp-no:#ef4444;--mvp-partial:#f59e0b;--accent:#3b82f6;--radius:10px}
+:root{--bg:#fff;--surface:#f8f9fa;--text:#1a1a2e;--border:#e2e8f0;--good:#10b981;--bad:#ef4444;--warn:#f59e0b;--accent:#3b82f6;--accent2:#60a5fa;--ceo:#a855f7;--radius:10px}
 [data-theme="dark"]{--bg:#0f0f23;--surface:#1a1a2e;--text:#e2e8f0;--border:#2d2d44}
 *{margin:0;padding:0;box-sizing:border-box}
-body{font-family:'Noto Sans KR',sans-serif;font-size:15px;line-height:1.6;color:var(--text);background:var(--bg);transition:background .3s,color .3s}
+body{font-family:'Noto Sans KR',sans-serif;font-size:15px;line-height:1.6;color:var(--text);background:var(--bg);transition:.3s}
 code,.mono{font-family:'IBM Plex Mono',monospace}
 .header{padding:24px 32px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}
-.header h1{font-size:24px;font-weight:700}
-.header-meta{display:flex;gap:16px;align-items:center;font-size:13px;opacity:.7;flex-wrap:wrap}
+.header h1{font-size:22px;font-weight:900}
+.header-meta{display:flex;gap:14px;align-items:center;font-size:13px;opacity:.7;flex-wrap:wrap;margin-top:4px}
 .theme-toggle{cursor:pointer;padding:6px 12px;border:1px solid var(--border);border-radius:6px;background:var(--surface);color:var(--text);font-size:13px}
-.docnav{display:flex;gap:6px;padding:10px 32px;border-bottom:1px solid var(--border);flex-wrap:wrap;overflow-x:auto}
+.docnav{display:flex;gap:6px;padding:10px 32px;border-bottom:1px solid var(--border);flex-wrap:wrap}
 .docnav a{padding:7px 14px;border-radius:6px;font-size:13px;font-weight:700;text-decoration:none;color:var(--text);opacity:.6;white-space:nowrap}
 .docnav a:hover{opacity:1;background:var(--surface)}
 .docnav a.active{opacity:1;color:var(--accent);background:var(--surface)}
 .tabs{display:flex;border-bottom:2px solid var(--border);padding:0 32px;gap:4px;overflow-x:auto}
-.tab-btn{padding:12px 20px;cursor:pointer;border:none;background:none;font-size:14px;font-weight:700;color:var(--text);opacity:.5;border-bottom:3px solid transparent;transition:.2s;white-space:nowrap}
+.tab-btn{padding:12px 18px;cursor:pointer;border:none;background:none;font-size:14px;font-weight:700;color:var(--text);opacity:.5;border-bottom:3px solid transparent;white-space:nowrap}
 .tab-btn.active{opacity:1;border-bottom-color:var(--accent);color:var(--accent)}
-.tab-content{display:none;padding:24px 32px;max-width:1100px;margin:0 auto}
+.tab-content{display:none;padding:24px 32px;max-width:1000px;margin:0 auto}
 .tab-content.active{display:block}
-.intro{font-size:14px;opacity:.8;margin-bottom:20px}
-.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);margin-bottom:12px;overflow:hidden}
-.card-header{padding:14px 18px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;font-weight:700;font-size:15px;border-left:4px solid var(--accent)}
-.card-header:hover{opacity:.8}
-.card-header .arrow{transition:transform .2s;font-size:12px}
-.card-header.open .arrow{transform:rotate(180deg)}
-.card-body{display:none;padding:0 18px 14px}
-.card-body.open{display:block}
-table{width:100%;border-collapse:collapse;font-size:13px;margin-top:8px}
+.intro{font-size:14px;opacity:.8;margin-bottom:18px}
+.principle-box{background:var(--surface);border:1px solid var(--border);border-left:4px solid var(--accent);border-radius:var(--radius);padding:14px 16px;margin-bottom:18px}
+.flow-title{font-size:16px;font-weight:900;margin:22px 0 10px;padding-bottom:6px;border-bottom:2px solid var(--border)}
+.step-flow{display:flex;flex-direction:column;gap:6px;margin:10px 0}
+.step{padding:7px 13px;background:var(--surface);border:1px solid var(--border);border-radius:6px;font-size:13px;line-height:1.45}
+.step:not(:first-child)::before{content:"↓ ";color:var(--accent);font-weight:700;margin-right:6px}
+.step.start{border-left:4px solid var(--accent)}
+.step.good{border-left:4px solid var(--good)}
+.step.bad{border-left:4px solid var(--bad)}
+.step.end{border-left:4px solid var(--warn)}
+.branch{margin:4px 0 4px 18px;padding:6px 12px;border-left:3px solid var(--warn);font-size:13px;background:var(--surface);border-radius:0 6px 6px 0}
+.edge{margin:5px 0;padding:8px 12px;border-left:3px solid var(--bad);font-size:13px;background:var(--surface);border-radius:0 6px 6px 0}
+.edge b{color:var(--bad);margin-right:6px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:10px;margin:8px 0}
+.node{padding:12px;border:1px solid var(--border);border-radius:8px;font-size:13px;background:var(--surface);border-top:3px solid var(--accent)}
+.node b{display:block;margin-bottom:6px}.node span{font-size:11.5px;opacity:.75;line-height:1.7}
+table{width:100%;border-collapse:collapse;font-size:13px;margin:12px 0}
 th,td{padding:8px 10px;border:1px solid var(--border);text-align:left}
 th{background:var(--surface);font-weight:700;white-space:nowrap}
-[data-theme="dark"] .card-body th,[data-theme="dark"] .card-body td{color:#fff}
-[data-theme="dark"] .card-body th{background:#2a2a4a}
-[data-theme="dark"] .card-body td{border-color:#3a3a55}
-.mvp-o{color:var(--mvp-yes);font-weight:700}.mvp-x{color:var(--mvp-no);font-weight:700}.mvp-p{color:var(--mvp-partial);font-weight:700}
-.flow-section{margin-bottom:28px}
-.flow-title{font-size:16px;font-weight:700;margin:24px 0 10px;padding-bottom:6px;border-bottom:2px solid var(--border);cursor:pointer;display:flex;justify-content:space-between;align-items:center;user-select:none}
-.flow-title:hover{opacity:.8}
-.flow-title .ft-arrow{transition:transform .2s;font-size:12px}
-.flow-title.open .ft-arrow{transform:rotate(180deg)}
-.flow-body{display:none}.flow-body.open{display:block}
-.step-flow{display:flex;flex-direction:column;align-items:flex-start;gap:6px;margin:10px 0}
-.step{padding:7px 13px;background:var(--surface);border:1px solid var(--border);border-radius:6px;font-size:13px;max-width:100%;line-height:1.45}
-.step:not(:first-of-type)::before{content:"↓ ";color:var(--accent);font-weight:700;margin-right:6px}
-.step.start{border-left:4px solid var(--accent)}
-.step.good{border-left:4px solid var(--mvp-yes)}
-.step.bad{border-left:4px solid var(--mvp-no)}
-.step.end{border-left:4px solid var(--mvp-partial)}
-.scenario-block{margin:24px 0 12px;padding-top:8px}
-.scenario-block:first-child{margin-top:8px}
-.scenario-title{font-size:14px;font-weight:700;color:var(--text);margin-bottom:6px;letter-spacing:.01em}
-.branch{margin:4px 0 4px 20px;padding:6px 12px;border-left:3px solid var(--mvp-partial);font-size:13px;background:var(--surface);border-radius:0 6px 6px 0}
-.edge-case{margin:4px 0;padding:8px 12px;border-left:3px solid var(--mvp-no);font-size:13px;background:var(--surface);border-radius:0 6px 6px 0}
-.edge-cat{font-weight:700;color:var(--mvp-no);margin-right:6px}
-.sitemap-platform{margin-bottom:24px}
-.sitemap-platform h3{font-size:16px;margin-bottom:12px;padding-bottom:6px;border-bottom:2px solid var(--border)}
-.sitemap-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px}
-.sitemap-node{padding:12px;border:1px solid var(--border);border-radius:8px;font-size:13px;background:var(--surface);border-top:3px solid var(--accent)}
-.sitemap-node .s-label{font-weight:700;margin-bottom:6px}
-.sitemap-node .s-users{font-size:11px;opacity:.7;line-height:1.7}
-.principle-box{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:18px;border-left:4px solid var(--accent)}
-.principle-box h4{margin-bottom:8px;color:var(--accent)}
-.principle-box ul,.principle-box ol{padding-left:20px;font-size:14px}
-.legend{display:flex;flex-wrap:wrap;gap:14px;margin-bottom:16px;padding:12px;background:var(--surface);border-radius:8px;font-size:12px}
-.legend-item{display:flex;align-items:center;gap:6px}
-.legend-color{width:14px;height:14px;border-radius:3px}
-@media(max-width:768px){.header{padding:16px}.tabs{padding:0 16px}.tab-content{padding:16px}.sitemap-grid{grid-template-columns:1fr}}
-@media(max-width:480px){.tab-btn{padding:8px 12px;font-size:12px}}
+[data-theme="dark"] th{background:#2a2a4a}
+.tag{display:inline-block;padding:1px 8px;border-radius:8px;font-size:11px;font-weight:700;color:#fff}
+@media(max-width:768px){.header,.docnav,.tabs{padding-left:16px;padding-right:16px}.tab-content{padding:16px}}
 </style>
 </head>
 <body>
 <div class="header">
-  <div>
-    <h1>퇴근 엘리베이터 <span style="font-size:14px;opacity:.6">Escape Elevator</span></h1>
-    <div class="header-meta">
-      <span>사용자 흐름 &amp; 기능 구성</span>
-      <span class="mono">v1.0</span>
-      <span>2026-06-19</span>
-      <span>캐주얼 웹게임 · 1차 Web → 2차 PWA</span>
-    </div>
-  </div>
+  <div><h1>퇴근 엘리베이터 <span style="font-size:13px;opacity:.6">Escape Elevator</span></h1>
+  <div class="header-meta"><span>사용자 흐름</span><span class="mono">v2.0</span><span>2026-06-19</span></div></div>
   <button class="theme-toggle" onclick="toggleTheme()">🌓 테마</button>
 </div>
-
 <div class="docnav">
   <a href="planning.html">기획안</a>
   <a href="기능명세서.html">기능 명세서</a>
   <a href="user-flow.html" class="active">사용자 흐름</a>
 </div>
-
 <div class="tabs">
-  <button class="tab-btn active" onclick="showTab('tab1',this)">01 게임 흐름</button>
-  <button class="tab-btn" onclick="showTab('tab2',this)">02 사용자 흐름</button>
-  <button class="tab-btn" onclick="showTab('tab3',this)">03 화면 구성</button>
-  <button class="tab-btn" onclick="showTab('tab4',this)">04 상태 &amp; 규칙</button>
+  <button class="tab-btn active" onclick="showTab('t1',this)">01 게임 흐름</button>
+  <button class="tab-btn" onclick="showTab('t2',this)">02 사용자 흐름</button>
+  <button class="tab-btn" onclick="showTab('t3',this)">03 화면 구성</button>
+  <button class="tab-btn" onclick="showTab('t4',this)">04 상태 &amp; 규칙</button>
 </div>
 
-<!-- ===================== TAB 1: 게임 흐름 ===================== -->
-<div id="tab1" class="tab-content active">
-  <p class="intro">엘리베이터를 출발시켜 퇴근하려 하지만 승객들이 끊임없이 방해한다. 스트레스를 관리하며 최대한 많은 층을 올라가는 것이 목표인 엔드리스 루프 게임.</p>
-
-  <div class="principle-box">
-    <h4>핵심 루프 한 줄 요약</h4>
-    <p>문닫기 → 3초 무방해 시 <b>출발 성공</b>(층수↑·점수↑·스트레스↓) / 승객 충돌 시 <b>출발 실패</b>(문 재개방·스트레스↑) → 반복 → 스트레스 100% 시 게임 오버.</p>
+<!-- ===== 게임 흐름 ===== -->
+<div id="t1" class="tab-content active">
+  <p class="intro">빌딩 꼭대기에서 시작해 빈 틈에 문을 닫아 한 층씩 내려가고, 1층 로비에 도착하면 퇴근 성공. 하트 3개를 다 잃으면 야근(게임 오버).</p>
+  <div class="principle-box"><b>핵심 루프</b><br>문 닫기 → 3초 무방해 시 <b>한 층 하강</b>(점수+100) / 닫는 중 승객 도착 시 <b>실패(하트 −1)</b> → 반복 → 1층 도착(승리) 또는 하트 0(패배).</div>
+  <div class="flow-title">메인 루프</div>
+  <div class="step-flow">
+    <div class="step start">단계 선택 → 3·2·1·START 카운트다운</div>
+    <div class="step">엘리베이터 대기(문 열림) · 승객 우측에서 접근</div>
+    <div class="step">문 닫기 (버튼 / Space · ↓ · Enter)</div>
+    <div class="step">3초 카운트 — 승객 도착 여부 판정</div>
   </div>
-
-  <div class="legend">
-    <span class="legend-item"><span class="legend-color" style="background:var(--accent)"></span>시작/진행</span>
-    <span class="legend-item"><span class="legend-color" style="background:var(--mvp-yes)"></span>성공 분기</span>
-    <span class="legend-item"><span class="legend-color" style="background:var(--mvp-no)"></span>실패 분기</span>
-    <span class="legend-item"><span class="legend-color" style="background:var(--mvp-partial)"></span>종료</span>
+  <div style="margin:10px 0">
+    <div class="branch"><b>성공</b> → 한 층 ▼ 하강 · 점수 +100 · 콤보 · 상승(하강) 연출</div>
+    <div class="branch"><b>실패(충돌)</b> → 문 재개방 · 하트 −1 · 콤보 초기화 (택배=지연 / 부장·대표=강제)</div>
   </div>
-
-  <div class="flow-section">
-    <div class="flow-title open" onclick="toggleFlow(this)">메인 게임 루프 <span class="ft-arrow">▼</span></div>
-    <div class="flow-body open">
-      <div class="step-flow">
-        <div class="step start">Start (게임 시작 · F-001)</div>
-        <div class="step">엘리베이터 대기 — 문 열림</div>
-        <div class="step">문닫기 버튼 클릭 (F-002)</div>
-        <div class="step">문 닫힘 시도 — 3초 카운트</div>
-        <div class="step">출발 판정 (F-003) · 승객 충돌 여부</div>
-      </div>
-      <div class="scenario-block">
-        <div class="scenario-title">판정 분기</div>
-        <div class="branch"><b>성공</b> → 층수 +1 (F-009) · 점수 +100 (F-008) · 스트레스 -10 (F-007) → 대기로 복귀</div>
-        <div class="branch"><b>실패 (승객 충돌 · F-006)</b> → 문 재개방 · 타입별 스트레스 증가 → 대기로 복귀</div>
-      </div>
-      <div class="step-flow">
-        <div class="step bad">스트레스 누적 → 100% 도달</div>
-        <div class="step end">게임 오버 (F-010) → 결과 화면</div>
-        <div class="step">다시하기 (F-011) → Start 로 복귀</div>
-      </div>
-    </div>
-  </div>
-
-  <div class="flow-section">
-    <div class="flow-title" onclick="toggleFlow(this)">승객 생성·이동 루프 (병렬) <span class="ft-arrow">▼</span></div>
-    <div class="flow-body">
-      <div class="step-flow">
-        <div class="step start">생성 타이머 (1~5초 랜덤)</div>
-        <div class="step">확률 표에 따라 승객 타입 결정 (F-004)</div>
-        <div class="step">화면 우측 생성 → 엘리베이터로 이동 (F-005)</div>
-        <div class="step">엘리베이터 도착 여부 판정</div>
-      </div>
-      <div class="scenario-block">
-        <div class="branch">문 닫는 중 도착 → <b>출발 실패</b> 트리거 (F-006)</div>
-        <div class="branch">화면 밖 이탈 → 승객 목록에서 제거</div>
-      </div>
-    </div>
+  <div class="step-flow">
+    <div class="step good">1층 로비 도착 → 🎉 퇴근 성공!</div>
+    <div class="step bad">하트 0 → 🫠 게임 오버(야근)</div>
+    <div class="step end">결과 화면 → 다음 단계 / 다시하기 / 메인</div>
   </div>
 </div>
 
-<!-- ===================== TAB 2: 사용자 흐름 ===================== -->
-<div id="tab2" class="tab-content">
-  <p class="intro">플레이어 관점의 주요 시나리오와 분기, 예외(엣지 케이스)를 정리한다.</p>
+<!-- ===== 사용자 흐름 ===== -->
+<div id="t2" class="tab-content">
+  <p class="intro">플레이어 관점 시나리오와 예외.</p>
 
-  <div class="flow-section">
-    <div class="flow-title open" onclick="toggleFlow(this)">S1. 첫 진입 ~ 첫 출발 <span class="ft-arrow">▼</span></div>
-    <div class="flow-body open">
-      <div class="step-flow">
-        <div class="step start">메인 화면 진입 — 제목 · 시작 버튼 · 최고 점수 확인</div>
-        <div class="step">시작 버튼 탭 → 게임 화면 진입 (층수 1 · 점수 0 · 스트레스 0)</div>
-        <div class="step">승객 등장 전 문닫기 버튼 탭</div>
-        <div class="step good">3초 무방해 → 첫 출발 성공 · 2층 도달</div>
-      </div>
-    </div>
+  <div class="flow-title">S1. 단계 선택 ~ 첫 하강</div>
+  <div class="step-flow">
+    <div class="step start">메인 → 게임 시작 → 단계 선택(1~5) 또는 연습</div>
+    <div class="step">카운트다운(3·2·1·START) 동안 대기</div>
+    <div class="step">빈 틈에 문 닫기 → 3초 유지</div>
+    <div class="step good">첫 출발 성공 → 한 층 하강</div>
   </div>
 
-  <div class="flow-section">
-    <div class="flow-title" onclick="toggleFlow(this)">S2. 출발 성공 루프 (정상 플레이) <span class="ft-arrow">▼</span></div>
-    <div class="flow-body">
-      <div class="step-flow">
-        <div class="step">문닫기 탭 → 승객 위치 확인</div>
-        <div class="step">승객 도착 전 3초 경과</div>
-        <div class="step good">출발 성공 → 점수 +100 · 스트레스 -10 · 층수 +1</div>
-        <div class="step">다음 층 대기 → 반복</div>
-      </div>
-      <div class="scenario-block">
-        <div class="scenario-title">분기</div>
-        <div class="branch">스트레스가 0에 가까울 때 성공 → 스트레스는 0 미만으로 내려가지 않음</div>
-      </div>
-    </div>
+  <div class="flow-title">S2. 연습 게임 (위험 미리보기)</div>
+  <div class="step-flow">
+    <div class="step start">메인 → 연습 게임 (6층 · 하트 5)</div>
+    <div class="step bad">지금 닫으면 늦는 승객 = 빨간 펄스 + <b>!</b> 표시</div>
+    <div class="step good">위험 표시 없을 때 닫기 연습 → 타이밍 학습</div>
   </div>
 
-  <div class="flow-section">
-    <div class="flow-title" onclick="toggleFlow(this)">S3. 출발 실패 (승객 충돌) <span class="ft-arrow">▼</span></div>
-    <div class="flow-body">
-      <div class="step-flow">
-        <div class="step">문닫기 탭 → 문 닫는 중</div>
-        <div class="step bad">승객이 3초 안에 도착 → 문 재개방</div>
-        <div class="step bad">타입별 스트레스 증가 (일반+5/인턴+3/택배+10/부장+20)</div>
-        <div class="step">다시 문닫기 시도 → 반복</div>
-      </div>
-      <div class="scenario-block">
-        <div class="scenario-title">승객 타입별 분기</div>
-        <div class="branch"><b>일반 사원 / 인턴</b> → 문 재개방 후 정상 재시도</div>
-        <div class="branch"><b>택배 기사</b> → 3초 지연 발생 후 재시도</div>
-        <div class="branch"><b>부장님</b> → 문 강제 개방 · 스트레스 +20 (최대 위협)</div>
-      </div>
-    </div>
+  <div class="flow-title">S3. 실패 (승객 충돌)</div>
+  <div class="step-flow">
+    <div class="step">문 닫는 중 승객 도착</div>
+    <div class="step bad">문 재개방 · 하트 −1 · 흔들림/진동</div>
+    <div class="step good">체크포인트마다 ❤️ 하트 낙하 → 탭해서 잡으면 +1</div>
+  </div>
+  <div class="branch"><b>택배</b> 충돌 → 잠깐 닫기 잠금(지연)</div>
+  <div class="branch"><b>부장 / 대표</b> 충돌 → 강제 개방, 대표는 초고속이라 가장 위험(5단계)</div>
+
+  <div class="flow-title">S4. 클리어 ~ 다음 단계</div>
+  <div class="step-flow">
+    <div class="step good">1층 도착 → 퇴근 성공! · 단계별 최고 점수 저장</div>
+    <div class="step end">결과 → "다음 단계 ▶" (5단계까지) / "다시하기" / "메인"</div>
   </div>
 
-  <div class="flow-section">
-    <div class="flow-title" onclick="toggleFlow(this)">S4. 게임 오버 ~ 재시작 <span class="ft-arrow">▼</span></div>
-    <div class="flow-body">
-      <div class="step-flow">
-        <div class="step bad">스트레스 100% 도달</div>
-        <div class="step end">게임 루프 정지 → 결과 화면 (최종 점수 · 도달 층수 · 통계)</div>
-        <div class="step">최고 점수 갱신 시 LocalStorage 저장 (F-012)</div>
-        <div class="step good">다시하기 탭 → 상태 초기화 후 새 게임 (F-011)</div>
-      </div>
-    </div>
-  </div>
+  <div class="flow-title">엣지 케이스</div>
+  <div class="edge"><b>연타</b> 닫는 중 추가 입력 무시(중복 타이머 방지)</div>
+  <div class="edge"><b>일시정지</b> ⏸ / Esc · P → 갱신·입력 정지, 오버레이</div>
+  <div class="edge"><b>백그라운드</b> 탭 비활성 시 delta time 클램프로 폭주 방지</div>
+  <div class="edge"><b>저장소 차단</b> LocalStorage 불가 시 메모리 폴백(최고 점수 비영구)</div>
+  <div class="edge"><b>사운드</b> mp3 없거나 음소거면 무음, 효과음·배경음 개별 토글</div>
+</div>
 
-  <div class="flow-section">
-    <div class="flow-title" onclick="toggleFlow(this)">엣지 케이스 / 예외 처리 <span class="ft-arrow">▼</span></div>
-    <div class="flow-body">
-      <div class="edge-case"><span class="edge-cat">입력</span>문닫기 버튼 연타/더블탭 → 이미 닫는 중이면 입력 무시 (중복 타이머 방지)</div>
-      <div class="edge-case"><span class="edge-cat">동시성</span>다수 승객 동시 도착 → 가장 먼저 도착한 1건으로 실패 처리, 나머지는 문 재개방 상태로 흡수</div>
-      <div class="edge-case"><span class="edge-cat">저장소</span>LocalStorage 차단/미지원(사파리 프라이빗 등) → 메모리 값으로 폴백, 최고 점수 비영구 저장</div>
-      <div class="edge-case"><span class="edge-cat">백그라운드</span>탭 비활성/화면 전환 → delta time 누적 폭주 방지(최대 프레임 간격 클램프), 복귀 시 정상 진행</div>
-      <div class="edge-case"><span class="edge-cat">모바일</span>화면 회전/리사이즈 → 레이아웃 재계산, 진행 중 상태 유지</div>
-      <div class="edge-case"><span class="edge-cat">게임오버</span>판정 도중 스트레스 100 도달 → 진행 중 출발 판정 즉시 중단</div>
-    </div>
+<!-- ===== 화면 구성 ===== -->
+<div id="t3" class="tab-content">
+  <p class="intro">4개 화면 전환: 메인 → 단계 선택 → 게임 → 결과.</p>
+  <div class="grid">
+    <div class="node"><b>① 메인</b><span>제목 · 규칙 · 승객 범례<br>[게임 시작 / 연습 게임]<br>오디오 토글(🔊/🎵)</span></div>
+    <div class="node" style="border-top-color:var(--accent2)"><b>② 단계 선택</b><span>1~5단계 카드<br>난이도 · 빌딩 층수 · 최고 점수</span></div>
+    <div class="node" style="border-top-color:var(--good)"><b>③ 게임</b><span>층수 · 점수 · 콤보 · 하트<br>하강 진행 레일 🛗→🏁<br>엘리베이터 · 승객 · 문닫기 · ⏸</span></div>
+    <div class="node" style="border-top-color:var(--warn)"><b>④ 결과</b><span>승리/실패 · 최종 점수<br>통계 · 최고 점수<br>[다음 단계 / 다시하기 / 메인]</span></div>
+  </div>
+  <div class="flow-title">전환 흐름</div>
+  <div class="step-flow">
+    <div class="step start">① 메인 → (게임 시작) → ② 단계 선택</div>
+    <div class="step">② → (단계 클릭) → ③ 게임</div>
+    <div class="step bad">③ → (하트 0 / 1층 도착) → ④ 결과</div>
+    <div class="step good">④ → (다음 단계/다시하기) → ③ 게임 / (메인) → ①</div>
   </div>
 </div>
 
-<!-- ===================== TAB 3: 화면 구성 ===================== -->
-<div id="tab3" class="tab-content">
-  <p class="intro">단일 페이지 내 3개 화면 전환 구조 (메인 → 게임 → 결과 → 메인/게임).</p>
+<!-- ===== 상태 & 규칙 ===== -->
+<div id="t4" class="tab-content">
+  <p class="intro">상태 전이 · 단계 · 승객 · 밸런스. 상세는 기능 명세서 참고.</p>
 
-  <div class="sitemap-platform">
-    <h3>화면 맵</h3>
-    <div class="sitemap-grid">
-      <div class="sitemap-node">
-        <div class="s-label">① 메인 화면</div>
-        <div class="s-users">· 게임 제목<br>· 시작 버튼<br>· 최고 점수 표시 (F-012)</div>
-      </div>
-      <div class="sitemap-node" style="border-top-color:var(--mvp-yes)">
-        <div class="s-label">② 게임 화면</div>
-        <div class="s-users">· 현재 층수 / 점수<br>· 스트레스 게이지<br>· 엘리베이터 + 승객 영역<br>· 문닫기 버튼</div>
-      </div>
-      <div class="sitemap-node" style="border-top-color:var(--mvp-partial)">
-        <div class="s-label">③ 결과 화면</div>
-        <div class="s-users">· 최종 점수 / 도달 층수<br>· 게임 통계<br>· 다시하기 버튼</div>
-      </div>
-    </div>
-  </div>
+  <div class="flow-title">상태 전이</div>
+  <table>
+    <tr><th>현재</th><th>이벤트</th><th>다음</th></tr>
+    <tr><td>메뉴</td><td>단계/연습 선택</td><td>게임(카운트다운)</td></tr>
+    <tr><td>문 열림</td><td>문 닫기</td><td>닫는 중</td></tr>
+    <tr><td>닫는 중</td><td>3초 무방해</td><td style="color:var(--good)">한 층 하강</td></tr>
+    <tr><td>닫는 중</td><td>승객 충돌</td><td style="color:var(--bad)">문 열림 · 하트 −1</td></tr>
+    <tr><td>플레이</td><td>1층 도착</td><td style="color:var(--good)">승리</td></tr>
+    <tr><td>플레이</td><td>하트 0</td><td style="color:var(--bad)">패배(야근)</td></tr>
+  </table>
 
-  <div class="flow-section">
-    <div class="flow-title open" onclick="toggleFlow(this)">화면 전환 흐름 <span class="ft-arrow">▼</span></div>
-    <div class="flow-body open">
-      <div class="step-flow">
-        <div class="step start">① 메인 화면</div>
-        <div class="step">시작 버튼 (F-001) → ② 게임 화면</div>
-        <div class="step bad">스트레스 100% (F-010) → ③ 결과 화면</div>
-        <div class="step good">다시하기 (F-011) → ② 게임 화면</div>
-      </div>
-    </div>
-  </div>
+  <div class="flow-title">단계</div>
+  <table>
+    <tr><th>단계</th><th>빌딩</th><th>난이도</th><th>하트 회복</th><th>비고</th></tr>
+    <tr><td>1 느긋한 오후</td><td>20층</td><td>★</td><td>❤️×1</td><td>드뭄·느림</td></tr>
+    <tr><td>2 평범한 퇴근</td><td>20층</td><td>★★</td><td>❤️×2</td><td>표준</td></tr>
+    <tr><td>3 러시아워</td><td>20층</td><td>★★★</td><td>❤️×3</td><td>자주·빠르게</td></tr>
+    <tr><td>4 야근 지옥</td><td>20층</td><td>★★★★</td><td>❤️×4</td><td>쉴 틈 없음</td></tr>
+    <tr><td>5 대표님 등장</td><td>20층</td><td>★★★★★</td><td>❤️×5</td><td>대표 출현</td></tr>
+    <tr><td>연습 게임</td><td>6층</td><td>-</td><td>-</td><td>위험 표시 ON</td></tr>
+  </table>
 
-  <div class="card">
-    <div class="card-header open" onclick="toggleCard(this)">게임 화면 HUD 구성 요소 <span class="arrow">▼</span></div>
-    <div class="card-body open">
-      <table>
-        <tr><th>요소</th><th>설명</th><th>연동 기능</th></tr>
-        <tr><td>층수</td><td>현재 도달 층 (시작 1)</td><td>F-009</td></tr>
-        <tr><td>점수</td><td>누적 점수</td><td>F-008</td></tr>
-        <tr><td>스트레스 게이지</td><td>0~100, 100 도달 시 게임 오버</td><td>F-007 / F-010</td></tr>
-        <tr><td>엘리베이터</td><td>문 열림/닫힘 상태 표시</td><td>F-002 / F-003</td></tr>
-        <tr><td>승객 영역</td><td>우측에서 접근하는 승객 렌더링</td><td>F-004 / F-005</td></tr>
-        <tr><td>문닫기 버튼</td><td>핵심 조작 (pointerdown)</td><td>F-002</td></tr>
-      </table>
-    </div>
-  </div>
-</div>
+  <div class="flow-title">승객</div>
+  <table>
+    <tr><th>승객</th><th>등장</th><th>속도</th><th>효과</th></tr>
+    <tr><td><span class="tag" style="background:var(--good)">🎓 인턴</span></td><td>20%</td><td>느림</td><td>-</td></tr>
+    <tr><td><span class="tag" style="background:var(--accent)">🧑‍💼 사원</span></td><td>60%</td><td>보통</td><td>-</td></tr>
+    <tr><td><span class="tag" style="background:var(--warn)">📦 택배</span></td><td>10%</td><td>빠름</td><td>지연</td></tr>
+    <tr><td><span class="tag" style="background:var(--bad)">👔 부장</span></td><td>10%</td><td>매우 빠름</td><td>강제 개방</td></tr>
+    <tr><td><span class="tag" style="background:var(--ceo)">🕴️ 대표</span></td><td>5단계</td><td>초고속</td><td>강제 개방</td></tr>
+  </table>
+  <p style="font-size:12px;opacity:.7">충돌 시 하트 −1은 모두 동일. 차이는 속도·특수효과·등장 단계.</p>
 
-<!-- ===================== TAB 4: 상태 & 규칙 ===================== -->
-<div id="tab4" class="tab-content">
-  <p class="intro">상태 전이, 수치 밸런스, 승객·스트레스 규칙 요약. 상세는 <a href="기능명세서.html">기능 명세서</a> 참고.</p>
-
-  <div class="card">
-    <div class="card-header open" onclick="toggleCard(this)">상태 전이 (State Transition) <span class="arrow">▼</span></div>
-    <div class="card-body open">
-      <table>
-        <tr><th>현재 상태</th><th>이벤트</th><th>다음 상태</th></tr>
-        <tr><td>Ready (메인)</td><td>시작 버튼 (F-001)</td><td>Playing</td></tr>
-        <tr><td>Playing (문 열림)</td><td>문닫기 버튼 (F-002)</td><td>Door Closing</td></tr>
-        <tr><td>Door Closing</td><td>3초 무방해 (F-003 성공)</td><td class="mvp-o">Playing (층수+1)</td></tr>
-        <tr><td>Door Closing</td><td>승객 충돌 (F-006)</td><td class="mvp-x">Playing (문 열림, 스트레스+)</td></tr>
-        <tr><td>Playing</td><td>stress ≥ 100 (F-010)</td><td class="mvp-p">Game Over</td></tr>
-        <tr><td>Game Over</td><td>다시하기 (F-011)</td><td>Playing</td></tr>
-      </table>
-    </div>
-  </div>
-
-  <div class="card">
-    <div class="card-header" onclick="toggleCard(this)">승객 명세 <span class="arrow">▼</span></div>
-    <div class="card-body">
-      <table>
-        <tr><th>승객</th><th>등장 확률</th><th>효과</th><th>스트레스</th></tr>
-        <tr><td>일반 사원</td><td>60%</td><td>문 재개방</td><td>+5</td></tr>
-        <tr><td>인턴</td><td>20%</td><td>문 재개방</td><td>+3</td></tr>
-        <tr><td>택배 기사</td><td>10%</td><td>3초 지연</td><td>+10</td></tr>
-        <tr><td>부장님</td><td>10%</td><td>문 강제 개방</td><td>+20</td></tr>
-      </table>
-    </div>
-  </div>
-
-  <div class="card">
-    <div class="card-header" onclick="toggleCard(this)">스트레스 증감 규칙 <span class="arrow">▼</span></div>
-    <div class="card-body">
-      <table>
-        <tr><th>이벤트</th><th>변화량</th></tr>
-        <tr><td>일반 사원 충돌</td><td class="mvp-x">+5</td></tr>
-        <tr><td>인턴 충돌</td><td class="mvp-x">+3</td></tr>
-        <tr><td>택배 기사 충돌</td><td class="mvp-x">+10</td></tr>
-        <tr><td>부장님 충돌</td><td class="mvp-x">+20</td></tr>
-        <tr><td>출발 성공</td><td class="mvp-o">-10</td></tr>
-      </table>
-      <p style="font-size:12px;opacity:.7;margin-top:8px">범위: 최소 0 / 최대 100. 100 도달 시 게임 오버.</p>
-    </div>
-  </div>
-
-  <div class="card">
-    <div class="card-header" onclick="toggleCard(this)">수치 밸런스 요약 <span class="arrow">▼</span></div>
-    <div class="card-body">
-      <table>
-        <tr><th>항목</th><th>값</th></tr>
-        <tr><td>시작 층수</td><td>1</td></tr>
-        <tr><td>출발 판정 시간</td><td>3초</td></tr>
-        <tr><td>승객 생성 주기</td><td>1~5초 랜덤</td></tr>
-        <tr><td>출발 성공 점수</td><td>+100</td></tr>
-        <tr><td>출발 성공 스트레스</td><td>-10</td></tr>
-        <tr><td>게임 오버 임계치</td><td>스트레스 100</td></tr>
-      </table>
-    </div>
-  </div>
+  <div class="flow-title">하트 · 밸런스</div>
+  <table>
+    <tr><th>항목</th><th>값</th></tr>
+    <tr><td>시작 하트</td><td>3개 (4·5단계 4·5개 / 연습 5개)</td></tr>
+    <tr><td>보너스 하트</td><td>단계 번호만큼 하늘에서 낙하 → 탭해서 잡기(최대치까지, 못 잡으면 소멸)</td></tr>
+    <tr><td>시작 카운트다운</td><td>3·2·1·START</td></tr>
+    <tr><td>출발 판정 시간</td><td>3초</td></tr>
+    <tr><td>출발 성공 점수</td><td>+100 (콤보 +30)</td></tr>
+    <tr><td>택배 지연</td><td>1.5초</td></tr>
+  </table>
 </div>
 
 <script>
-function showTab(id, btn){
+function showTab(id,btn){
   document.querySelectorAll('.tab-content').forEach(t=>t.classList.remove('active'));
   document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
-  btn.classList.add('active');
-  location.hash = id;
+  document.getElementById(id).classList.add('active'); btn.classList.add('active'); location.hash=id;
 }
-function toggleTheme(){
-  const el = document.documentElement;
-  el.setAttribute('data-theme', el.getAttribute('data-theme')==='dark' ? 'light' : 'dark');
-  try{ localStorage.setItem('ee-theme', el.getAttribute('data-theme')); }catch(e){}
-}
-function toggleCard(h){
-  h.classList.toggle('open');
-  h.nextElementSibling.classList.toggle('open');
-}
-function toggleFlow(h){
-  h.classList.toggle('open');
-  h.nextElementSibling.classList.toggle('open');
-}
-// restore theme + tab from hash
-(function(){
-  try{ const t=localStorage.getItem('ee-theme'); if(t) document.documentElement.setAttribute('data-theme', t); }catch(e){}
-  const hash = location.hash.replace('#','');
-  if(hash){ const b=document.querySelector(`.tab-btn[onclick*="${hash}"]`); if(b) b.click(); }
-})();
+function toggleTheme(){var e=document.documentElement;e.setAttribute('data-theme',e.getAttribute('data-theme')==='dark'?'light':'dark');try{localStorage.setItem('ee-theme',e.getAttribute('data-theme'))}catch(x){}}
+(function(){try{var t=localStorage.getItem('ee-theme');if(t)document.documentElement.setAttribute('data-theme',t)}catch(x){}var h=location.hash.replace('#','');if(h){var b=document.querySelector('.tab-btn[onclick*="'+h+'"]');if(b)b.click();}})();
 </script>
 </body>
 </html>
