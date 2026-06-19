@@ -1,0 +1,836 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>퇴근 엘리베이터 — 기능 명세서</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#fff;--surface:#f8f9fa;--text:#1a1a2e;--border:#e2e8f0;--mvp-yes:#10b981;--mvp-no:#ef4444;--mvp-partial:#f59e0b;--accent:#3b82f6;--radius:10px}
+[data-theme="dark"]{--bg:#0f0f23;--surface:#1a1a2e;--text:#e2e8f0;--border:#2d2d44}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Noto Sans KR',sans-serif;font-size:15px;line-height:1.7;color:var(--text);background:var(--bg);transition:background .3s,color .3s}
+code,.mono{font-family:'IBM Plex Mono',monospace}
+.header{padding:24px 32px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;position:sticky;top:0;background:var(--bg);z-index:10}
+.header h1{font-size:22px;font-weight:700}
+.header-meta{display:flex;gap:14px;align-items:center;font-size:13px;opacity:.7;flex-wrap:wrap;margin-top:4px}
+.docnav{display:flex;gap:6px;padding:10px 32px;border-bottom:2px solid var(--border);flex-wrap:wrap;overflow-x:auto}
+.docnav a{padding:7px 14px;border-radius:6px;font-size:13px;font-weight:700;text-decoration:none;color:var(--text);opacity:.6;white-space:nowrap}
+.docnav a:hover{opacity:1;background:var(--surface)}
+.docnav a.active{opacity:1;color:var(--accent);background:var(--surface)}
+.theme-toggle{cursor:pointer;padding:6px 12px;border:1px solid var(--border);border-radius:6px;background:var(--surface);color:var(--text);font-size:13px}
+.doc{max-width:920px;margin:0 auto;padding:32px}
+.doc h1{font-size:26px;font-weight:700;margin:36px 0 14px;padding-bottom:8px;border-bottom:3px solid var(--accent)}
+.doc h1:first-child{margin-top:0}
+.doc h2{font-size:20px;font-weight:700;margin:30px 0 12px;padding-bottom:6px;border-bottom:2px solid var(--border)}
+.doc h3{font-size:16px;font-weight:700;margin:22px 0 8px;color:var(--accent)}
+.doc p{margin:10px 0}
+.doc ul,.doc ol{margin:10px 0;padding-left:24px}
+.doc li{margin:4px 0}
+.doc a{color:var(--accent);text-decoration:none}
+.doc a:hover{text-decoration:underline}
+.doc hr{border:0;border-top:1px solid var(--border);margin:28px 0}
+.doc table{width:100%;border-collapse:collapse;font-size:13.5px;margin:14px 0}
+.doc th,.doc td{padding:9px 12px;border:1px solid var(--border);text-align:left;vertical-align:top}
+.doc th{background:var(--surface);font-weight:700;white-space:nowrap}
+[data-theme="dark"] .doc th{background:#2a2a4a}
+.doc code{background:var(--surface);padding:2px 6px;border-radius:4px;font-size:13px;border:1px solid var(--border)}
+.doc pre{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:14px 16px;overflow-x:auto;margin:14px 0}
+.doc pre code{background:none;border:0;padding:0;font-size:13px;line-height:1.6}
+.doc blockquote{margin:14px 0;padding:10px 16px;border-left:4px solid var(--accent);background:var(--surface);border-radius:0 8px 8px 0;font-size:14px}
+.doc blockquote p{margin:4px 0}
+@media(max-width:768px){.header,.docnav{padding-left:16px;padding-right:16px}.doc{padding:18px}}
+</style>
+</head>
+<body>
+<div class="header">
+  <div>
+    <h1>퇴근 엘리베이터 <span style="font-size:13px;opacity:.6">Escape Elevator</span></h1>
+    <div class="header-meta"><span>기능 명세서</span><span class="mono">v1.0</span><span>2026-06-19</span></div>
+  </div>
+  <button class="theme-toggle" onclick="toggleTheme()">🌓 테마</button>
+</div>
+<div class="docnav"><a href="planning.html">기획안</a><a href="기능명세서.html" class="active">기능 명세서</a><a href="user-flow.html">사용자 흐름</a></div>
+<div class="doc">
+<h1>퇴근 엘리베이터 (Escape Elevator) — 기능 명세서</h1>
+<blockquote>
+<p>본 문서는 <a href="planning.html">기획안</a> 의 5번(기능 명세서)·6번(승객 명세)·8번(데이터 구조)을 개발 기준으로 상세화한 것이다.
+사용자 흐름 시각화는 <a href="user-flow.html">사용자 흐름</a> 참고.</p>
+</blockquote>
+<h2>문서 정보</h2>
+<table>
+<thead>
+<tr>
+<th>항목</th>
+<th>내용</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>프로젝트명</td>
+<td>퇴근 엘리베이터 (Escape Elevator)</td>
+</tr>
+<tr>
+<td>장르</td>
+<td>캐주얼 웹게임 / 아케이드 / 코미디</td>
+</tr>
+<tr>
+<td>플랫폼</td>
+<td>Web Browser (1차) → PWA (2차)</td>
+</tr>
+<tr>
+<td>기술 스택</td>
+<td>HTML5 / CSS3 / Vanilla JS / LocalStorage</td>
+</tr>
+<tr>
+<td>렌더링 방식</td>
+<td>DOM + CSS</td>
+</tr>
+<tr>
+<td>최종 수정</td>
+<td>2026-06-19</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>1. 개요</h2>
+<p>플레이어는 퇴근을 위해 엘리베이터를 출발시키려 하지만, 끊임없이 탑승하려는 사람들 때문에 방해받는다.
+스트레스를 관리하며 최대한 많은 층을 이동(= 높은 점수 획득)하는 것이 목표다.</p>
+<ul>
+<li><strong>승리 조건</strong>: 없음 (엔드리스). 최고 점수 갱신이 목표.</li>
+<li><strong>패배 조건</strong>: 스트레스 게이지 100% 도달.</li>
+<li><strong>핵심 루프</strong>: 문닫기 → 출발 판정 → (성공: 층수↑·점수↑·스트레스↓ / 실패: 문 재개방·스트레스↑) → 반복.</li>
+</ul>
+<hr />
+<h2>2. 용어 정의</h2>
+<table>
+<thead>
+<tr>
+<th>용어</th>
+<th>정의</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>층수 (floor)</td>
+<td>누적 출발 성공 횟수. 시작값 1.</td>
+</tr>
+<tr>
+<td>점수 (score)</td>
+<td>출발 성공 시 누적되는 점수.</td>
+</tr>
+<tr>
+<td>스트레스 (stress)</td>
+<td>0~100 범위의 게이지. 100 도달 시 게임 오버.</td>
+</tr>
+<tr>
+<td>출발 판정</td>
+<td>문이 일정 시간(3초) 방해받지 않으면 출발 성공.</td>
+</tr>
+<tr>
+<td>승객 (passenger)</td>
+<td>랜덤 생성되어 엘리베이터로 접근하는 방해 요소.</td>
+</tr>
+<tr>
+<td>콤보</td>
+<td>연속 출발 성공 시 적용되는 보너스(확장 기능).</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>3. 기능 목록 요약</h2>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>기능명</th>
+<th>우선순위</th>
+<th>MVP</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>F-001</td>
+<td>게임 시작</td>
+<td>필수</td>
+<td>O</td>
+</tr>
+<tr>
+<td>F-002</td>
+<td>문닫기</td>
+<td>필수</td>
+<td>O</td>
+</tr>
+<tr>
+<td>F-003</td>
+<td>출발 판정</td>
+<td>필수</td>
+<td>O</td>
+</tr>
+<tr>
+<td>F-004</td>
+<td>승객 생성</td>
+<td>필수</td>
+<td>O</td>
+</tr>
+<tr>
+<td>F-005</td>
+<td>승객 이동</td>
+<td>필수</td>
+<td>O</td>
+</tr>
+<tr>
+<td>F-006</td>
+<td>승객 충돌</td>
+<td>필수</td>
+<td>O</td>
+</tr>
+<tr>
+<td>F-007</td>
+<td>스트레스 시스템</td>
+<td>필수</td>
+<td>O</td>
+</tr>
+<tr>
+<td>F-008</td>
+<td>점수 시스템</td>
+<td>필수</td>
+<td>O</td>
+</tr>
+<tr>
+<td>F-009</td>
+<td>층수 시스템</td>
+<td>필수</td>
+<td>O</td>
+</tr>
+<tr>
+<td>F-010</td>
+<td>게임 오버</td>
+<td>필수</td>
+<td>O</td>
+</tr>
+<tr>
+<td>F-011</td>
+<td>다시하기</td>
+<td>필수</td>
+<td>O</td>
+</tr>
+<tr>
+<td>F-012</td>
+<td>최고 점수 저장</td>
+<td>권장</td>
+<td>△</td>
+</tr>
+<tr>
+<td>F-013</td>
+<td>콤보 보너스</td>
+<td>선택</td>
+<td>X</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>MVP: O = 포함 / △ = 가능하면 포함 / X = 차기 단계</p>
+</blockquote>
+<hr />
+<h2>4. 상세 기능 명세</h2>
+<h3>F-001 게임 시작</h3>
+<table>
+<thead>
+<tr>
+<th>항목</th>
+<th>내용</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>설명</td>
+<td>게임을 초기 상태로 시작한다.</td>
+</tr>
+<tr>
+<td>트리거/입력</td>
+<td>메인 화면 시작 버튼 클릭(<code>pointerdown</code>)</td>
+</tr>
+<tr>
+<td>선행 조건</td>
+<td>메인 화면 진입 상태</td>
+</tr>
+<tr>
+<td>처리</td>
+<td><code>floor = 1</code>, <code>score = 0</code>, <code>stress = 0</code>, <code>door = "open"</code>, <code>gameOver = false</code>, 승객 목록 초기화, 게임 루프 시작</td>
+</tr>
+<tr>
+<td>출력</td>
+<td>게임 화면으로 전환, HUD(층수/점수/스트레스) 표시</td>
+</tr>
+<tr>
+<td>예외</td>
+<td>없음</td>
+</tr>
+</tbody>
+</table>
+<h3>F-002 문닫기</h3>
+<table>
+<thead>
+<tr>
+<th>항목</th>
+<th>내용</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>설명</td>
+<td>플레이어가 문닫기 버튼을 눌러 문 닫힘을 시도한다.</td>
+</tr>
+<tr>
+<td>트리거/입력</td>
+<td>문닫기 버튼 클릭(<code>pointerdown</code>)</td>
+</tr>
+<tr>
+<td>선행 조건</td>
+<td><code>door === "open"</code>, <code>gameOver === false</code></td>
+</tr>
+<tr>
+<td>처리</td>
+<td>문 닫힘 애니메이션 시작, <code>door = "closing"</code>, 출발 판정 타이머 시작</td>
+</tr>
+<tr>
+<td>출력</td>
+<td>문 상태 시각 변경</td>
+</tr>
+<tr>
+<td>예외</td>
+<td>이미 닫힘/닫는 중이면 입력 무시</td>
+</tr>
+</tbody>
+</table>
+<h3>F-003 출발 판정</h3>
+<table>
+<thead>
+<tr>
+<th>항목</th>
+<th>내용</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>설명</td>
+<td>문이 일정 시간 동안 방해받지 않으면 출발 성공으로 판정한다.</td>
+</tr>
+<tr>
+<td>조건</td>
+<td>문 닫힘 상태 3초 유지(<code>door === "closing"</code> 동안 승객 충돌 없음)</td>
+</tr>
+<tr>
+<td>처리(성공)</td>
+<td><code>floor += 1</code>, <code>score += 100</code>, <code>stress -= 10</code>(최소 0), 승객 목록 초기화, <code>door = "open"</code></td>
+</tr>
+<tr>
+<td>처리(실패)</td>
+<td>F-006(승객 충돌)으로 분기</td>
+</tr>
+<tr>
+<td>출력</td>
+<td>다음 층 이동 연출</td>
+</tr>
+<tr>
+<td>예외</td>
+<td>판정 도중 게임 오버 시 즉시 중단</td>
+</tr>
+</tbody>
+</table>
+<h3>F-004 승객 생성</h3>
+<table>
+<thead>
+<tr>
+<th>항목</th>
+<th>내용</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>설명</td>
+<td>랜덤한 승객이 일정 주기로 생성된다.</td>
+</tr>
+<tr>
+<td>트리거</td>
+<td>생성 타이머 (1~5초 랜덤 간격)</td>
+</tr>
+<tr>
+<td>처리</td>
+<td>확률 표(6장)에 따라 승객 타입 결정, 화면 우측에 생성하여 승객 목록에 추가</td>
+</tr>
+<tr>
+<td>출력</td>
+<td>승객 등장</td>
+</tr>
+<tr>
+<td>예외</td>
+<td><code>gameOver === true</code> 이면 생성 중단</td>
+</tr>
+</tbody>
+</table>
+<h3>F-005 승객 이동</h3>
+<table>
+<thead>
+<tr>
+<th>항목</th>
+<th>내용</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>설명</td>
+<td>승객이 엘리베이터 방향으로 이동한다.</td>
+</tr>
+<tr>
+<td>처리</td>
+<td>매 프레임 승객을 타입별 속도(delta time 적용)로 좌측 이동, 엘리베이터 도착 여부 판정</td>
+</tr>
+<tr>
+<td>출력</td>
+<td>승객 위치 갱신</td>
+</tr>
+<tr>
+<td>예외</td>
+<td>화면 밖 이탈 승객은 목록에서 제거</td>
+</tr>
+</tbody>
+</table>
+<h3>F-006 승객 충돌</h3>
+<table>
+<thead>
+<tr>
+<th>항목</th>
+<th>내용</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>설명</td>
+<td>승객이 문이 닫히기 전에 엘리베이터에 도착한다.</td>
+</tr>
+<tr>
+<td>트리거</td>
+<td>승객 위치가 엘리베이터 영역 도달</td>
+</tr>
+<tr>
+<td>처리</td>
+<td>문 재개방(<code>door = "open"</code>), 타입별 스트레스 증가, 출발 판정 타이머 취소</td>
+</tr>
+<tr>
+<td>출력</td>
+<td>출발 실패, 스트레스 게이지 상승</td>
+</tr>
+<tr>
+<td>예외</td>
+<td>충돌로 <code>stress &gt;= 100</code> 도달 시 F-010(게임 오버)로 분기</td>
+</tr>
+</tbody>
+</table>
+<h3>F-007 스트레스 시스템</h3>
+<table>
+<thead>
+<tr>
+<th>항목</th>
+<th>내용</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>설명</td>
+<td>플레이어의 스트레스 수치를 관리한다.</td>
+</tr>
+<tr>
+<td>범위</td>
+<td>최소 0, 최대 100</td>
+</tr>
+<tr>
+<td>증가 규칙</td>
+<td>일반 사원 +5 / 인턴 +3 / 택배 기사 +10 / 부장님 +20</td>
+</tr>
+<tr>
+<td>감소 규칙</td>
+<td>출발 성공 -10</td>
+</tr>
+<tr>
+<td>출력</td>
+<td>스트레스 게이지 UI 갱신</td>
+</tr>
+<tr>
+<td>예외</td>
+<td>0 미만으로 내려가지 않음, 100 도달 시 게임 오버 트리거</td>
+</tr>
+</tbody>
+</table>
+<h3>F-008 점수 시스템</h3>
+<table>
+<thead>
+<tr>
+<th>항목</th>
+<th>내용</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>설명</td>
+<td>출발 성공 시 점수를 획득한다.</td>
+</tr>
+<tr>
+<td>계산식</td>
+<td><code>score += 100</code></td>
+</tr>
+<tr>
+<td>추가 보너스</td>
+<td>연속 성공 시 콤보 점수 적용 가능(F-013, 선택)</td>
+</tr>
+<tr>
+<td>출력</td>
+<td>점수 UI 갱신</td>
+</tr>
+<tr>
+<td>예외</td>
+<td>없음</td>
+</tr>
+</tbody>
+</table>
+<h3>F-009 층수 시스템</h3>
+<table>
+<thead>
+<tr>
+<th>항목</th>
+<th>내용</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>설명</td>
+<td>엘리베이터가 출발할 때마다 층수가 증가한다.</td>
+</tr>
+<tr>
+<td>계산식</td>
+<td><code>currentFloor += 1</code></td>
+</tr>
+<tr>
+<td>출력</td>
+<td>층수 UI 갱신</td>
+</tr>
+<tr>
+<td>예외</td>
+<td>없음</td>
+</tr>
+</tbody>
+</table>
+<h3>F-010 게임 오버</h3>
+<table>
+<thead>
+<tr>
+<th>항목</th>
+<th>내용</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>설명</td>
+<td>스트레스가 한계에 도달하면 게임을 종료한다.</td>
+</tr>
+<tr>
+<td>조건</td>
+<td><code>stress &gt;= 100</code></td>
+</tr>
+<tr>
+<td>처리</td>
+<td>게임 루프 정지, <code>gameOver = true</code>, 승객 생성 중단, 최고 점수 비교·저장(F-012)</td>
+</tr>
+<tr>
+<td>출력</td>
+<td>결과 화면 표시(최종 점수, 도달 층수, 통계)</td>
+</tr>
+<tr>
+<td>예외</td>
+<td>없음</td>
+</tr>
+</tbody>
+</table>
+<h3>F-011 다시하기</h3>
+<table>
+<thead>
+<tr>
+<th>항목</th>
+<th>내용</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>설명</td>
+<td>결과 화면에서 게임을 재시작한다.</td>
+</tr>
+<tr>
+<td>트리거/입력</td>
+<td>다시하기 버튼 클릭(<code>pointerdown</code>)</td>
+</tr>
+<tr>
+<td>처리</td>
+<td>F-001(게임 시작)과 동일하게 상태 초기화 후 게임 화면 진입</td>
+</tr>
+<tr>
+<td>출력</td>
+<td>새 게임 시작</td>
+</tr>
+<tr>
+<td>예외</td>
+<td>없음</td>
+</tr>
+</tbody>
+</table>
+<h3>F-012 최고 점수 저장 (권장)</h3>
+<table>
+<thead>
+<tr>
+<th>항목</th>
+<th>내용</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>설명</td>
+<td>역대 최고 점수를 저장·표시한다.</td>
+</tr>
+<tr>
+<td>처리</td>
+<td>게임 오버 시 <code>score</code>와 저장된 <code>bestScore</code> 비교, 갱신 시 LocalStorage에 저장</td>
+</tr>
+<tr>
+<td>저장소</td>
+<td>LocalStorage (<code>storage.js</code> 추상화 계층 경유)</td>
+</tr>
+<tr>
+<td>출력</td>
+<td>메인/결과 화면에 최고 점수 표시</td>
+</tr>
+<tr>
+<td>예외</td>
+<td>LocalStorage 미지원/차단 시 메모리 값으로 폴백</td>
+</tr>
+</tbody>
+</table>
+<h3>F-013 콤보 보너스 (선택)</h3>
+<table>
+<thead>
+<tr>
+<th>항목</th>
+<th>내용</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>설명</td>
+<td>연속 출발 성공 시 추가 점수를 부여한다.</td>
+</tr>
+<tr>
+<td>계산식</td>
+<td><code>score += 100 * comboMultiplier</code> (연속 성공마다 배수 증가)</td>
+</tr>
+<tr>
+<td>처리</td>
+<td>출발 실패 시 콤보 초기화</td>
+</tr>
+<tr>
+<td>출력</td>
+<td>콤보 UI 표시</td>
+</tr>
+<tr>
+<td>예외</td>
+<td>없음</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>5. 승객 명세</h2>
+<table>
+<thead>
+<tr>
+<th>승객</th>
+<th>등장 확률</th>
+<th>효과</th>
+<th>스트레스</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>일반 사원</td>
+<td>60%</td>
+<td>문 재개방</td>
+<td>+5</td>
+</tr>
+<tr>
+<td>인턴</td>
+<td>20%</td>
+<td>문 재개방</td>
+<td>+3</td>
+</tr>
+<tr>
+<td>택배 기사</td>
+<td>10%</td>
+<td>3초 지연</td>
+<td>+10</td>
+</tr>
+<tr>
+<td>부장님</td>
+<td>10%</td>
+<td>문 강제 개방</td>
+<td>+20</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>6. 데이터 모델</h2>
+<h3>GameState</h3>
+<pre><code class="language-javascript">{
+  score: 0,         // 점수
+  floor: 1,         // 층수
+  stress: 0,        // 스트레스 (0~100)
+  door: &quot;open&quot;,     // &quot;open&quot; | &quot;closing&quot;
+  passengers: [],   // Passenger[]
+  combo: 0,         // 연속 성공 횟수 (F-013)
+  bestScore: 0,     // 최고 점수 (F-012)
+  gameOver: false
+}
+</code></pre>
+<h3>Passenger</h3>
+<pre><code class="language-javascript">{
+  type: &quot;employee&quot;,  // &quot;employee&quot; | &quot;intern&quot; | &quot;courier&quot; | &quot;manager&quot;
+  speed: 3,          // 이동 속도
+  stressValue: 5,    // 충돌 시 스트레스 증가량
+  x: 0               // 현재 x 좌표
+}
+</code></pre>
+<hr />
+<h2>7. 상태 전이</h2>
+<table>
+<thead>
+<tr>
+<th>현재 상태</th>
+<th>이벤트</th>
+<th>다음 상태</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Ready (메인)</td>
+<td>시작 버튼 (F-001)</td>
+<td>Playing</td>
+</tr>
+<tr>
+<td>Playing (문 열림)</td>
+<td>문닫기 버튼 (F-002)</td>
+<td>Door Closing</td>
+</tr>
+<tr>
+<td>Door Closing</td>
+<td>3초 무방해 (F-003 성공)</td>
+<td>Playing (층수+1)</td>
+</tr>
+<tr>
+<td>Door Closing</td>
+<td>승객 충돌 (F-006)</td>
+<td>Playing (문 열림, 스트레스+)</td>
+</tr>
+<tr>
+<td>Playing</td>
+<td><code>stress &gt;= 100</code> (F-010)</td>
+<td>Game Over</td>
+</tr>
+<tr>
+<td>Game Over</td>
+<td>다시하기 (F-011)</td>
+<td>Playing</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>8. 수치 밸런스 요약</h2>
+<table>
+<thead>
+<tr>
+<th>항목</th>
+<th>값</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>시작 층수</td>
+<td>1</td>
+</tr>
+<tr>
+<td>출발 판정 시간</td>
+<td>3초</td>
+</tr>
+<tr>
+<td>승객 생성 주기</td>
+<td>1~5초 랜덤</td>
+</tr>
+<tr>
+<td>출발 성공 점수</td>
+<td>+100</td>
+</tr>
+<tr>
+<td>출발 성공 스트레스</td>
+<td>-10</td>
+</tr>
+<tr>
+<td>게임 오버 임계치</td>
+<td>스트레스 100</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>9. 비기능 요구사항</h2>
+<table>
+<thead>
+<tr>
+<th>분류</th>
+<th>요구사항</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>입력</td>
+<td><code>pointerdown</code> 기반 터치+마우스 통합 처리</td>
+</tr>
+<tr>
+<td>성능</td>
+<td><code>requestAnimationFrame</code> + delta time 게임 루프, 60fps 목표</td>
+</tr>
+<tr>
+<td>저장</td>
+<td>LocalStorage(<code>storage.js</code>로 추상화), 미지원 시 메모리 폴백</td>
+</tr>
+<tr>
+<td>반응형</td>
+<td>모바일 우선, <code>100dvh</code>, 확대/스크롤 차단</td>
+</tr>
+<tr>
+<td>PWA(2차)</td>
+<td>manifest + Service Worker(cache-first) 추가로 오프라인·설치 지원</td>
+</tr>
+<tr>
+<td>배포</td>
+<td>HTTPS 필수 (GitHub Pages / Vercel / Netlify)</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>PWA 전환 상세는 <a href="planning.html">기획안</a> 11번 참고.</p>
+</blockquote>
+</div>
+<script>
+function toggleTheme(){
+  const el=document.documentElement;
+  el.setAttribute('data-theme', el.getAttribute('data-theme')==='dark'?'light':'dark');
+  try{localStorage.setItem('ee-theme', el.getAttribute('data-theme'));}catch(e){}
+}
+(function(){try{const t=localStorage.getItem('ee-theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
+</script>
+</body>
+</html>
