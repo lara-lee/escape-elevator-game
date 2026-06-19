@@ -1,5 +1,5 @@
 // sw.js — 서비스워커 (cache-first → 오프라인 플레이)
-const CACHE = 'escape-elevator-v7';
+const CACHE = 'escape-elevator-v8';
 const ASSETS = [
   './',
   './index.html',
