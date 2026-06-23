@@ -44,6 +44,12 @@ window.addEventListener('DOMContentLoaded', () => {
     game.paused = false; UI.setPaused(false);
     game.toMenu(); UI.showScreen('menu'); Sound.startBgm();
   });
+  // 설정 → 앱 종료 (설치한 앱은 창 닫힘 / 브라우저 탭은 정책상 안내)
+  $('btnExitApp').addEventListener('click', () => {
+    $('settingsPanel').classList.remove('open');
+    try { window.close(); } catch (e) {}
+    setTimeout(() => { alert('설치한 앱(홈 화면 추가)에서는 바로 종료됩니다.\n브라우저에서는 탭(창)을 직접 닫아주세요.'); }, 250);
+  });
 
   // 일시정지 제어
   function setPause(on){

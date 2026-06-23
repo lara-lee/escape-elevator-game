@@ -23,6 +23,7 @@
       <button id="btnBgm" class="set-row"><span>🎵 배경음</span><span class="set-state" id="bgmState">ON</span></button>
       <button id="btnSfx" class="set-row"><span>🔊 효과음</span><span class="set-state" id="sfxState">ON</span></button>
       <button id="btnQuit" class="set-row set-quit">← 메인으로 나가기</button>
+      <button id="btnExitApp" class="set-row set-exit">✕ 앱 종료</button>
     </div>
   </div>
 
@@ -53,26 +54,34 @@
       <button id="btnHelpBack" class="back-btn">← 메인</button>
       <h2 class="stage-h">게임 방법</h2>
 
-      <div class="help-sub good">🎉 승리</div>
-      <p class="help-line">제한 시간 안에 <b>20층 꼭대기 → 1층 로비</b>까지 엘리베이터로 내려가면 퇴근 성공!</p>
+      <div class="help-card win">
+        <div class="help-sub good">🎉 승리</div>
+        <p class="help-line">제한 시간 안에 <b>20층 꼭대기 → 1층 로비</b>까지 엘리베이터로 내려가면 퇴근 성공!</p>
+      </div>
 
-      <div class="help-sub bad">🫠 게임 오버 (야근)</div>
-      <p class="help-line"><b>하트 0개</b>가 되거나 <b>제한 시간</b>이 끝나면 게임 오버.</p>
+      <div class="help-card lose">
+        <div class="help-sub bad">🫠 게임 오버 (야근)</div>
+        <p class="help-line"><b>하트 0개</b>가 되거나 <b>제한 시간</b>이 끝나면 게임 오버.</p>
+      </div>
 
-      <div class="help-sub">💡 꿀팁</div>
-      <ul class="help-rules">
-        <li>하늘에서 떨어지는 <b>❤️ 하트</b>를 탭해서 줍기</li>
-        <li>승객이 <b>오는 중에 닫으면</b> 하트 −1 → 빈 틈을 노리기</li>
-        <li>문 닫기는 <b>2초</b>만 버티면 한 층 내려감</li>
-      </ul>
+      <div class="help-card tip">
+        <div class="help-sub">💡 꿀팁</div>
+        <ul class="help-rules">
+          <li>하늘에서 떨어지는 <b>❤️ 하트</b>를 탭해서 줍기</li>
+          <li>승객이 <b>오는 중에 닫으면</b> 하트 −1 → 빈 틈을 노리기</li>
+          <li>문 닫기는 <b>2초</b>만 버티면 한 층 내려감</li>
+        </ul>
+      </div>
 
-      <div class="help-sub">🚶 승객</div>
-      <div class="rules-pax">
-        <div class="pax low"><span>🎓</span><b>인턴</b><i>느림</i></div>
-        <div class="pax mid"><span>🧑‍💼</span><b>사원</b><i>보통</i></div>
-        <div class="pax high"><span>📦</span><b>택배</b><i>지연</i></div>
-        <div class="pax max"><span>👔</span><b>부장</b><i>빠름</i></div>
-        <div class="pax ceo"><span>🕴️</span><b>대표</b><i>초고속</i></div>
+      <div class="help-card pax">
+        <div class="help-sub">🚶 승객</div>
+        <div class="rules-pax">
+          <div class="pax low"><span>🎓</span><b>인턴</b><i>느림</i></div>
+          <div class="pax mid"><span>🧑‍💼</span><b>사원</b><i>보통</i></div>
+          <div class="pax high"><span>📦</span><b>택배</b><i>지연</i></div>
+          <div class="pax max"><span>👔</span><b>부장</b><i>빠름</i></div>
+          <div class="pax ceo"><span>🕴️</span><b>대표</b><i>초고속</i></div>
+        </div>
       </div>
     </div>
   </section>

@@ -112,6 +112,16 @@ body{
 .help-sub.bad{color:#fb7185}
 .help-line{font-size:13.5px;color:var(--muted);line-height:1.6;margin:3px 0 4px;padding-left:2px}
 .help-line b{color:var(--text)}
+.help-card{background:var(--surface);border:1px solid var(--border);border-left:3px solid var(--border);
+  border-radius:4px;padding:12px 14px;margin-bottom:11px}
+.help-card.win{border-left-color:#10b981}
+.help-card.lose{border-left-color:#ef4444}
+.help-card.tip{border-left-color:#f59e0b}
+.help-card.pax{border-left-color:#8b5cf6}
+.help-card .help-sub{margin-top:0;margin-bottom:6px}
+.help-card .help-line{margin:0;padding-left:0}
+.help-card .help-rules{margin:6px 0 0}
+.help-card .rules-pax{margin-top:8px}
 
 /* ===== 단계 선택 ===== */
 #stageScreen{overflow-y:auto}
@@ -316,6 +326,8 @@ body{
 .set-row.off .set-state{color:var(--muted)}
 .set-row.set-quit{justify-content:center;color:#fca5a5;font-weight:800;margin-top:2px}
 .set-row.set-quit:hover{background:rgba(239,68,68,.14)}
+.set-row.set-exit{justify-content:center;color:#f87171;font-weight:800}
+.set-row.set-exit:hover{background:rgba(239,68,68,.2)}
 .icon-btn{width:30px;height:30px;border:1px solid var(--border);border-radius:8px;background:var(--surface);
   color:var(--text);font-size:13px;cursor:pointer;flex-shrink:0}
 .icon-btn:active{transform:scale(.92)}
