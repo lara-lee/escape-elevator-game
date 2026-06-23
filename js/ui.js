@@ -15,7 +15,7 @@ const UI = (() => {
   function init(){
     el = {
       menu:$('menu'), stageScreen:$('stageScreen'), game:$('game'), result:$('result'),
-      hudFloor:$('hudFloor'), hudScore:$('hudScore'), hudCombo:$('hudCombo'),
+      hudFloor:$('hudFloor'), hudScore:$('hudScore'), hudCombo:$('hudCombo'), hudComboN:$('hudComboN'),
       hearts:$('hearts'), stageTag:$('stageTag'), descentFill:$('descentFill'),
       descentRail:$('descentRail'), goalTag:$('goalTag'),
       stage:$('stage'), lane:$('lane'), elevator:$('elevator'), eleFloor:$('eleFloor'),
@@ -55,7 +55,7 @@ const UI = (() => {
     // 점수 롤링 애니메이션
     if(Math.abs(s.score - dispScore) < 1) dispScore = s.score;
     else dispScore += (s.score - dispScore) * 0.25;
-    el.hudScore.textContent = Math.round(dispScore);
+    el.hudScore.textContent = Math.round(dispScore).toLocaleString();
 
     // 층별 배경 (고층=어두운 밤하늘 → 로비=따뜻하고 밝게) + 별/도시 불빛
     const bt = Math.min(1, s.successes / Math.max(1, s.totalFloors - 1));
@@ -80,8 +80,8 @@ const UI = (() => {
     }
 
     if(s.combo > 1){
-      el.hudCombo.style.display = 'inline-flex';
-      el.hudCombo.textContent = '🔥 x' + s.combo;
+      el.hudCombo.style.display = 'flex';
+      el.hudComboN.textContent = s.combo;
     } else {
       el.hudCombo.style.display = 'none';
     }

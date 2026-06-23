@@ -94,15 +94,16 @@
   <!-- ===== 게임 화면 ===== -->
   <section id="game" class="screen">
     <header class="hud">
-      <div class="hud-item"><span class="lbl">층수</span><span class="val"><b id="hudFloor">1</b><i>F</i></span></div>
-      <div class="hud-item"><span class="lbl">점수</span><span class="val"><b id="hudScore">0</b></span></div>
-      <span class="hud-combo" id="hudCombo"></span>
+      <div class="stat"><span class="stat-l">층수</span><span class="stat-v"><b id="hudFloor">1</b>F</span></div>
+      <div class="stat"><span class="stat-l">점수</span><span class="stat-v"><b id="hudScore">0</b></span></div>
+      <div class="stat combo" id="hudCombo"><span class="stat-l">콤보</span><span class="stat-v">🔥<b id="hudComboN">1</b></span></div>
       <div class="hearts" id="hearts"></div>
     </header>
     <div class="subbar">
       <span class="stage-tag" id="stageTag">2단계 · 20층 빌딩</span>
       <span class="goal-tag" id="goalTag">로비까지 19층</span>
       <button id="btnPause" class="icon-btn" aria-label="일시정지">⏸</button>
+      <button id="btnExit" class="icon-btn" aria-label="나가기">🏠</button>
     </div>
 
     <div class="stage" id="stage">

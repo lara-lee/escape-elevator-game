@@ -51,6 +51,9 @@ window.addEventListener('DOMContentLoaded', () => {
   $('btnResume').addEventListener('click', () => setPause(false));
   $('btnPauseHome').addEventListener('click', () => { setPause(false); game.toMenu(); UI.showScreen('menu'); });
 
+  // 게임 중 나가기(🏠) → 메인
+  $('btnExit').addEventListener('click', () => { game.paused = false; UI.setPaused(false); game.toMenu(); UI.showScreen('menu'); Sound.startBgm(); });
+
   // PWA 설치 버튼 (항상 표시)
   let deferredPrompt = null;
   const btnInstall = $('btnInstall');
