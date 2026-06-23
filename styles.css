@@ -128,6 +128,8 @@ body{
 .stat .stat-v b{font-size:21px;font-weight:900}
 .stat.combo{display:none}
 .stat.combo .stat-v{color:#fbbf24;display:flex;align-items:center;gap:1px;font-size:19px}
+.stat.low .stat-v{color:var(--bad);animation:timePulse .8s ease infinite}
+@keyframes timePulse{0%,100%{opacity:1}50%{opacity:.45}}
 .hearts{margin-left:auto;display:flex;gap:3px;font-size:20px;line-height:1}
 .hearts .heart{display:inline-block}
 .hearts.hit{animation:heartsHit .4s ease}

@@ -35,6 +35,8 @@ class Game {
       floor: st.floors,              // 현재 층(꼭대기에서 시작 → 1층으로 하강)
       heartCheckpoints: this.recoverCheckpoints(st),
       introTimer: 0,                  // 시작 카운트다운(3·2·1·START)
+      timeLeft: st.time || 0,         // 제한 시간(초), 0 = 무제한
+      timeout: false,
       won: false,
       score: 0,
       combo: 0,
@@ -98,6 +100,12 @@ class Game {
       s.introTimer -= dt;
       if(s.introTimer <= -0.6) s.spawnTimer = this.spawnInterval();
       return;
+    }
+
+    // 제한 시간
+    if(s.timeLeft > 0){
+      s.timeLeft -= dt;
+      if(s.timeLeft <= 0){ s.timeLeft = 0; s.timeout = true; this.finishGame(false); return; }
     }
 
     s.elapsed += dt;

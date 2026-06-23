@@ -16,6 +16,7 @@ const UI = (() => {
     el = {
       menu:$('menu'), stageScreen:$('stageScreen'), game:$('game'), result:$('result'),
       hudFloor:$('hudFloor'), hudScore:$('hudScore'), hudCombo:$('hudCombo'), hudComboN:$('hudComboN'),
+      timeStat:$('timeStat'), hudTime:$('hudTime'),
       hearts:$('hearts'), stageTag:$('stageTag'), descentFill:$('descentFill'),
       descentRail:$('descentRail'), goalTag:$('goalTag'),
       stage:$('stage'), lane:$('lane'), elevator:$('elevator'), eleFloor:$('eleFloor'),
@@ -84,6 +85,16 @@ const UI = (() => {
       el.hudComboN.textContent = s.combo;
     } else {
       el.hudCombo.style.display = 'none';
+    }
+
+    // 제한 시간
+    const stTime = stageById(s.stageId).time || 0;
+    if(stTime > 0){
+      el.timeStat.style.display = 'flex';
+      el.hudTime.textContent = fmtTime(Math.max(0, s.timeLeft));
+      el.timeStat.classList.toggle('low', s.timeLeft <= 15);
+    } else {
+      el.timeStat.style.display = 'none';
     }
 
     renderHearts(s);
@@ -269,6 +280,10 @@ const UI = (() => {
       el.rTitle.textContent = s.practice ? '연습 완료!' : '퇴근 성공!';
       el.rStage.textContent = s.practice ? '이제 단계에 도전해보세요!'
         : st.label + ' · ' + st.name + ' 클리어! (1층 로비 도착)';
+    } else if(s.timeout){
+      el.rEmoji.textContent = '⏰';
+      el.rTitle.textContent = '시간 초과!';
+      el.rStage.textContent = st.label + ' · ' + st.name + ' · ' + s.floor + 'F에서 시간 종료';
     } else {
       el.rEmoji.textContent = '🫠';
       el.rTitle.textContent = '퇴근 실패…';
