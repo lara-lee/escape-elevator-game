@@ -69,13 +69,13 @@ th{background:var(--surface);font-weight:700;white-space:nowrap}
 <!-- ===== 게임 흐름 ===== -->
 <div id="t1" class="tab-content active">
   <p class="intro">빌딩 꼭대기에서 시작해 빈 틈에 문을 닫아 한 층씩 내려가고, 1층 로비에 도착하면 퇴근 성공. 하트 3개를 다 잃으면 야근(게임 오버).</p>
-  <div class="principle-box"><b>핵심 루프</b><br>문 닫기 → 3초 무방해 시 <b>한 층 하강</b>(점수+100) / 닫는 중 승객 도착 시 <b>실패(하트 −1)</b> → 반복 → 1층 도착(승리) 또는 하트 0(패배).</div>
+  <div class="principle-box"><b>핵심 루프</b><br>문 닫기 → 2초 무방해 시 <b>한 층 하강</b>(점수+100) / 닫는 중 승객 도착 시 <b>실패(하트 −1)</b> → 반복 → 1층 도착(승리) 또는 하트 0(패배).</div>
   <div class="flow-title">메인 루프</div>
   <div class="step-flow">
     <div class="step start">단계 선택 → 3·2·1·START 카운트다운</div>
     <div class="step">엘리베이터 대기(문 열림) · 승객 우측에서 접근</div>
     <div class="step">문 닫기 (버튼 / Space · ↓ · Enter)</div>
-    <div class="step">3초 카운트 — 승객 도착 여부 판정</div>
+    <div class="step">2초 카운트 — 승객 도착 여부 판정</div>
   </div>
   <div style="margin:10px 0">
     <div class="branch"><b>성공</b> → 한 층 ▼ 하강 · 점수 +100 · 콤보 · 상승(하강) 연출</div>
@@ -96,7 +96,7 @@ th{background:var(--surface);font-weight:700;white-space:nowrap}
   <div class="step-flow">
     <div class="step start">메인 → 게임 시작 → 단계 선택(1~5) 또는 연습</div>
     <div class="step">카운트다운(3·2·1·START) 동안 대기</div>
-    <div class="step">빈 틈에 문 닫기 → 3초 유지</div>
+    <div class="step">빈 틈에 문 닫기 → 2초 유지</div>
     <div class="step good">첫 출발 성공 → 한 층 하강</div>
   </div>
 
@@ -157,10 +157,11 @@ th{background:var(--surface);font-weight:700;white-space:nowrap}
     <tr><th>현재</th><th>이벤트</th><th>다음</th></tr>
     <tr><td>메뉴</td><td>단계/연습 선택</td><td>게임(카운트다운)</td></tr>
     <tr><td>문 열림</td><td>문 닫기</td><td>닫는 중</td></tr>
-    <tr><td>닫는 중</td><td>3초 무방해</td><td style="color:var(--good)">한 층 하강</td></tr>
+    <tr><td>닫는 중</td><td>2초 무방해</td><td style="color:var(--good)">한 층 하강</td></tr>
     <tr><td>닫는 중</td><td>승객 충돌</td><td style="color:var(--bad)">문 열림 · 하트 −1</td></tr>
     <tr><td>플레이</td><td>1층 도착</td><td style="color:var(--good)">승리</td></tr>
     <tr><td>플레이</td><td>하트 0</td><td style="color:var(--bad)">패배(야근)</td></tr>
+    <tr><td>플레이</td><td>제한 시간 0</td><td style="color:var(--bad)">패배(시간 초과)</td></tr>
   </table>
 
   <div class="flow-title">단계</div>
@@ -191,9 +192,10 @@ th{background:var(--surface);font-weight:700;white-space:nowrap}
     <tr><td>시작 하트</td><td>3개 (4·5단계 4·5개 / 연습 5개)</td></tr>
     <tr><td>보너스 하트</td><td>단계 번호만큼 하늘에서 낙하 → 탭해서 잡기(최대치까지, 못 잡으면 소멸)</td></tr>
     <tr><td>시작 카운트다운</td><td>3·2·1·START</td></tr>
-    <tr><td>출발 판정 시간</td><td>3초</td></tr>
+    <tr><td>출발 판정 시간</td><td>2초</td></tr>
     <tr><td>출발 성공 점수</td><td>+100 (콤보 +30)</td></tr>
     <tr><td>택배 지연</td><td>1.5초</td></tr>
+    <tr><td>제한 시간</td><td>1단계 2:00 ~ 5단계 3:30 (연습 무제한)</td></tr>
   </table>
 </div>
 

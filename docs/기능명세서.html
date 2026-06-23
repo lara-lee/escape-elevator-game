@@ -67,7 +67,7 @@ code,.mono{font-family:'IBM Plex Mono',monospace}
 </tr>
 <tr>
 <td>F-003</td>
-<td>출발 판정 (3초) → 한 층 하강</td>
+<td>출발 판정 (2초) → 한 층 하강</td>
 <td></td>
 </tr>
 <tr>
@@ -130,6 +130,11 @@ code,.mono{font-family:'IBM Plex Mono',monospace}
 <td>연습 모드 + 위험 미리보기</td>
 <td></td>
 </tr>
+<tr>
+<td>F-016</td>
+<td>제한 시간</td>
+<td>단계별 2:00~3:30</td>
+</tr>
 </tbody>
 </table>
 <hr />
@@ -142,11 +147,11 @@ code,.mono{font-family:'IBM Plex Mono',monospace}
 <h3>F-002 문 닫기</h3>
 <ul>
 <li>입력: 문닫기 버튼(<code>pointerdown</code>) / <code>Space</code> · <code>↓</code> · <code>Enter</code>.</li>
-<li>조건: 문 열림 + 카운트다운 종료 + 지연/일시정지 아님 → 문 닫힘 시작(3초 타이머).</li>
+<li>조건: 문 열림 + 카운트다운 종료 + 지연/일시정지 아님 → 문 닫힘 시작(2초 타이머).</li>
 </ul>
 <h3>F-003 출발 판정 → 하강</h3>
 <ul>
-<li>3초 동안 승객 도착 없으면 성공 → <strong>현재 층 −1(하강)</strong>, 점수·콤보, 출발 연출.</li>
+<li>2초 동안 승객 도착 없으면 성공 → <strong>현재 층 −1(하강)</strong>, 점수·콤보, 출발 연출.</li>
 <li>1층 도달 시 F-010(승리).</li>
 </ul>
 <h3>F-004 승객 생성</h3>
@@ -198,11 +203,16 @@ code,.mono{font-family:'IBM Plex Mono',monospace}
 </ul>
 <h3>F-014 사운드</h3>
 <ul>
-<li>효과음(🔊)/배경음(🎵) <strong>각각 토글</strong>, 설정 LocalStorage 저장. <code>sounds/</code> mp3 매핑.</li>
+<li>우상단 <strong>⚙ 설정</strong> → 배경음(🎵)/효과음(🔊) 각각 ON·OFF, 설정 LocalStorage 저장. <code>sounds/</code> mp3 매핑.</li>
 </ul>
 <h3>F-015 연습 모드 + 위험 미리보기</h3>
 <ul>
-<li>6층·하트 5·느린 설정. <strong>지금 닫으면 3초 안에 도착할 승객을 빨간 펄스 + <code>!</code></strong> 로 표시.</li>
+<li>6층·하트 5·느린 설정. <strong>지금 닫으면 2초 안에 도착할 승객을 빨간 펄스 + <code>!</code></strong> 로 표시.</li>
+</ul>
+<h3>F-016 제한 시간</h3>
+<ul>
+<li>단계별 제한 시간(1단계 120s ~ 5단계 210s, 연습 무제한). 매 프레임 감소, <strong>0이 되면 시간 초과 → 게임 오버</strong>(결과 "시간 초과").</li>
+<li>HUD에 <strong>시간(m:ss)</strong> 표시, 15초 이하 빨강·깜빡임. 일시정지·시작 카운트다운 중에는 멈춤.</li>
 </ul>
 <hr />
 <h2>승객 명세</h2>
@@ -270,7 +280,7 @@ code,.mono{font-family:'IBM Plex Mono',monospace}
 </tr>
 <tr>
 <td>Door Closing</td>
-<td>3초 무방해</td>
+<td>2초 무방해</td>
 <td>Playing(층 −1)</td>
 </tr>
 <tr>
@@ -310,7 +320,7 @@ code,.mono{font-family:'IBM Plex Mono',monospace}
 </tr>
 <tr>
 <td>출발 판정 시간</td>
-<td>3초</td>
+<td>2초</td>
 </tr>
 <tr>
 <td>출발 성공 점수</td>
@@ -323,6 +333,14 @@ code,.mono{font-family:'IBM Plex Mono',monospace}
 <tr>
 <td>택배 지연</td>
 <td>1.5초</td>
+</tr>
+<tr>
+<td>제한 시간</td>
+<td>1단계 2:00 ~ 5단계 3:30 (연습 무제한)</td>
+</tr>
+<tr>
+<td>보너스 하트 낙하</td>
+<td>약 20초</td>
 </tr>
 </tbody>
 </table>
