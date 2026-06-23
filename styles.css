@@ -88,7 +88,7 @@ body{
 .rd-eq{color:var(--text);font-weight:900;margin-left:2px}
 .rd-hp{color:#fb7185;font-weight:900}
 .rules-pax{display:grid;grid-template-columns:repeat(5,1fr);gap:5px;margin-top:13px}
-.pax{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;
+.pax{display:flex;flex-direction:column;align-items:center;justify-content:flex-start;gap:3px;
   padding:7px 1px;border-radius:10px;border:1px solid var(--border);background:var(--frame)}
 .pax span{font-size:16px;width:30px;height:30px;border-radius:50%;display:grid;place-items:center;
   border:2px solid rgba(255,255,255,.5);box-shadow:0 0 8px var(--pc)}
