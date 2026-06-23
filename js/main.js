@@ -50,6 +50,10 @@ window.addEventListener('DOMContentLoaded', () => {
   // 연습 게임
   $('btnPractice').addEventListener('click', () => { Sound.startBgm(); game.startGame(0); });
 
+  // 게임 방법
+  $('btnHelp').addEventListener('click', () => UI.showScreen('help'));
+  $('btnHelpBack').addEventListener('click', () => UI.showScreen('menu'));
+
   // 일시정지 / 재개 / 메인
   $('btnPause').addEventListener('click', () => setPause(!game.paused));
   $('btnResume').addEventListener('click', () => setPause(false));

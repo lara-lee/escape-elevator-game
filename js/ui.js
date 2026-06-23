@@ -14,7 +14,7 @@ const UI = (() => {
 
   function init(){
     el = {
-      menu:$('menu'), stageScreen:$('stageScreen'), game:$('game'), result:$('result'),
+      menu:$('menu'), helpScreen:$('helpScreen'), stageScreen:$('stageScreen'), game:$('game'), result:$('result'),
       hudFloor:$('hudFloor'), hudScore:$('hudScore'), hudCombo:$('hudCombo'), hudComboN:$('hudComboN'),
       timeStat:$('timeStat'), hudTime:$('hudTime'),
       hearts:$('hearts'), stageTag:$('stageTag'), descentFill:$('descentFill'),
@@ -30,7 +30,7 @@ const UI = (() => {
   }
 
   function showScreen(name){
-    const map = { menu:el.menu, stage:el.stageScreen, game:el.game, result:el.result };
+    const map = { menu:el.menu, help:el.helpScreen, stage:el.stageScreen, game:el.game, result:el.result };
     for(const k in map) map[k].classList.toggle('active', k === name);
   }
 

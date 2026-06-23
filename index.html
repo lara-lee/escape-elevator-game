@@ -33,29 +33,39 @@
       <p class="subtitle">ESCAPE ELEVATOR</p>
       <p class="tagline">"오늘도 퇴근에 실패했습니다."</p>
 
-      <div class="rules">
-        <div class="rules-title">📋 규칙</div>
-        <div class="rules-diagram">
-          <div class="rd-row"><b class="rd-ic">🏢</b>20층<i class="rd-ar">▶</i><b class="rd-ic">🏁</b>1층<span class="rd-eq">＝ 퇴근 성공!</span></div>
-          <div class="rd-row"><b class="rd-ic">🚪</b>문 닫기<i class="rd-ar">▶</i><span class="rd-badge">2초</span><i class="rd-ar">▶</i><b class="rd-ic">⬇️</b>한 층</div>
-          <div class="rd-row"><b class="rd-ic">🏃</b>승객 오면<i class="rd-ar">▶</i><span class="rd-hp">❤️ −1</span></div>
-          <div class="rd-row"><b class="rd-ic">❤️</b>하트 낙하<i class="rd-ar">▶</i><b class="rd-ic">👆</b>탭<i class="rd-ar">▶</i><span class="rd-hp">+1</span></div>
-        </div>
-        <div class="rules-pax">
-          <div class="pax low"><span>🎓</span><b>인턴</b><i>느림</i></div>
-          <div class="pax mid"><span>🧑‍💼</span><b>사원</b><i>보통</i></div>
-          <div class="pax high"><span>📦</span><b>택배</b><i>지연</i></div>
-          <div class="pax max"><span>👔</span><b>부장</b><i>빠름</i></div>
-          <div class="pax ceo"><span>🕴️</span><b>대표</b><i>초고속</i></div>
-        </div>
-      </div>
-
       <div class="menu-actions">
         <button id="btnStart" class="menu-act primary">게임 시작</button>
         <button id="btnPractice" class="menu-act practice">연습 게임</button>
+        <div class="menu-links">
+          <button id="btnHelp" class="menu-link">게임 방법</button>
+          <button id="btnInstall" class="menu-link">앱 설치</button>
+        </div>
       </div>
-      <button id="btnInstall" class="install-link">📲 앱 설치</button>
       <div class="version">v1.1</div>
+    </div>
+  </section>
+
+  <!-- ===== 게임 방법 화면 ===== -->
+  <section id="helpScreen" class="screen">
+    <div class="help-inner">
+      <button id="btnHelpBack" class="back-btn">← 메인</button>
+      <h2 class="stage-h">게임 방법</h2>
+      <ul class="help-rules">
+        <li><b>문 닫기</b> → 2초 버티면 한 층 아래로</li>
+        <li>승객이 오는 중에 닫으면 <b>하트 −1</b></li>
+        <li><b>하트 0</b>이면 게임 오버(야근)</li>
+        <li><b>1층 로비 도착</b> = 퇴근 성공!</li>
+        <li>하늘에서 떨어지는 <b>❤️ 하트</b>를 탭해서 줍기</li>
+        <li>단계마다 <b>제한 시간</b> — 0이 되면 게임 오버</li>
+      </ul>
+      <div class="help-sub">승객</div>
+      <div class="rules-pax">
+        <div class="pax low"><span>🎓</span><b>인턴</b><i>느림</i></div>
+        <div class="pax mid"><span>🧑‍💼</span><b>사원</b><i>보통</i></div>
+        <div class="pax high"><span>📦</span><b>택배</b><i>지연</i></div>
+        <div class="pax max"><span>👔</span><b>부장</b><i>빠름</i></div>
+        <div class="pax ceo"><span>🕴️</span><b>대표</b><i>초고속</i></div>
+      </div>
     </div>
   </section>
 
