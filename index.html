@@ -22,6 +22,7 @@
     <div class="settings-panel" id="settingsPanel">
       <button id="btnBgm" class="set-row"><span>🎵 배경음</span><span class="set-state" id="bgmState">ON</span></button>
       <button id="btnSfx" class="set-row"><span>🔊 효과음</span><span class="set-state" id="sfxState">ON</span></button>
+      <button id="btnQuit" class="set-row set-quit">← 메인으로 나가기</button>
     </div>
   </div>
 
@@ -51,15 +52,21 @@
     <div class="help-inner">
       <button id="btnHelpBack" class="back-btn">← 메인</button>
       <h2 class="stage-h">게임 방법</h2>
+
+      <div class="help-sub good">🎉 승리</div>
+      <p class="help-line">제한 시간 안에 <b>20층 꼭대기 → 1층 로비</b>까지 엘리베이터로 내려가면 퇴근 성공!</p>
+
+      <div class="help-sub bad">🫠 게임 오버 (야근)</div>
+      <p class="help-line"><b>하트 0개</b>가 되거나 <b>제한 시간</b>이 끝나면 게임 오버.</p>
+
+      <div class="help-sub">💡 꿀팁</div>
       <ul class="help-rules">
-        <li><b>문 닫기</b> → 2초 버티면 한 층 아래로</li>
-        <li>승객이 오는 중에 닫으면 <b>하트 −1</b></li>
-        <li><b>하트 0</b>이면 게임 오버(야근)</li>
-        <li><b>1층 로비 도착</b> = 퇴근 성공!</li>
         <li>하늘에서 떨어지는 <b>❤️ 하트</b>를 탭해서 줍기</li>
-        <li>단계마다 <b>제한 시간</b> — 0이 되면 게임 오버</li>
+        <li>승객이 <b>오는 중에 닫으면</b> 하트 −1 → 빈 틈을 노리기</li>
+        <li>문 닫기는 <b>2초</b>만 버티면 한 층 내려감</li>
       </ul>
-      <div class="help-sub">승객</div>
+
+      <div class="help-sub">🚶 승객</div>
       <div class="rules-pax">
         <div class="pax low"><span>🎓</span><b>인턴</b><i>느림</i></div>
         <div class="pax mid"><span>🧑‍💼</span><b>사원</b><i>보통</i></div>

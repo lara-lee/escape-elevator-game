@@ -32,8 +32,18 @@ window.addEventListener('DOMContentLoaded', () => {
   btnBgm.addEventListener('click', () => { Sound.toggleBgm(); refreshAudio(); });
   btnSfx.addEventListener('click', () => { Sound.toggleSfx(); refreshAudio(); });
   // ⚙ 설정 패널 토글 + 바깥 클릭 시 닫기
-  $('btnSettings').addEventListener('click', (e) => { e.stopPropagation(); $('settingsPanel').classList.toggle('open'); });
+  $('btnSettings').addEventListener('click', (e) => {
+    e.stopPropagation();
+    $('btnQuit').style.display = (game.state.screen === 'menu') ? 'none' : 'block';  // 메인에선 숨김
+    $('settingsPanel').classList.toggle('open');
+  });
   document.addEventListener('click', (e) => { if(!e.target.closest('.settings-wrap')) $('settingsPanel').classList.remove('open'); });
+  // 설정 → 메인으로 나가기 (게임 중 종료)
+  $('btnQuit').addEventListener('click', () => {
+    $('settingsPanel').classList.remove('open');
+    game.paused = false; UI.setPaused(false);
+    game.toMenu(); UI.showScreen('menu'); Sound.startBgm();
+  });
 
   // 일시정지 제어
   function setPause(on){

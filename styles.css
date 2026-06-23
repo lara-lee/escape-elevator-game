@@ -107,7 +107,11 @@ body{
 .help-rules li{position:relative;padding-left:16px;line-height:1.5}
 .help-rules li::before{content:"·";position:absolute;left:3px;top:-1px;color:var(--accent2);font-weight:900;font-size:18px}
 .help-rules b{color:var(--text)}
-.help-sub{font-size:13px;font-weight:800;color:var(--muted);margin-top:16px;margin-bottom:2px}
+.help-sub{font-size:14px;font-weight:800;color:var(--muted);margin-top:16px;margin-bottom:2px}
+.help-sub.good{color:#34d399}
+.help-sub.bad{color:#fb7185}
+.help-line{font-size:13.5px;color:var(--muted);line-height:1.6;margin:3px 0 4px;padding-left:2px}
+.help-line b{color:var(--text)}
 
 /* ===== 단계 선택 ===== */
 #stageScreen{overflow-y:auto}
@@ -310,6 +314,8 @@ body{
 .set-state{font-size:12px;font-weight:900;color:var(--good)}
 .set-row.off{opacity:.75}
 .set-row.off .set-state{color:var(--muted)}
+.set-row.set-quit{justify-content:center;color:#fca5a5;font-weight:800;margin-top:2px}
+.set-row.set-quit:hover{background:rgba(239,68,68,.14)}
 .icon-btn{width:30px;height:30px;border:1px solid var(--border);border-radius:8px;background:var(--surface);
   color:var(--text);font-size:13px;cursor:pointer;flex-shrink:0}
 .icon-btn:active{transform:scale(.92)}
