@@ -15,6 +15,7 @@ const Sound = (() => {
   const cache = {};
   let sfxOn = true, bgmOn = true;
   let bgmEl = null;
+  let bgmWanted = false;   // 배경음이 "재생되어야 하는" 상태인지(백그라운드 복귀용)
 
   function initPrefs(){
     try {
@@ -46,13 +47,22 @@ const Sound = (() => {
 
   function startBgm(){
     if(!bgmOn || !FILES.bgm) return;
+    bgmWanted = true;
     try {
       if(!bgmEl){ bgmEl = new Audio(FILES.bgm); bgmEl.loop = true; bgmEl.volume = 0.4; }
       const p = bgmEl.play();
       if(p && p.catch) p.catch(() => {});
     } catch (e) {}
   }
-  function stopBgm(){ if(bgmEl){ try { bgmEl.pause(); } catch (e) {} } }
+  function stopBgm(){ bgmWanted = false; if(bgmEl){ try { bgmEl.pause(); } catch (e) {} } }
+
+  // 백그라운드 진입: 재생 의도(bgmWanted)는 유지한 채 즉시 정지 (효과음 캐시도 정지)
+  function suspend(){
+    if(bgmEl){ try { bgmEl.pause(); } catch (e) {} }
+    for(const k in cache){ try { cache[k].pause(); } catch (e) {} }
+  }
+  // 포그라운드 복귀: 정지 전에 재생 중이었다면 배경음 재개
+  function resume(){ if(bgmWanted && bgmOn) startBgm(); }
 
   function toggleSfx(){
     sfxOn = !sfxOn;
@@ -66,5 +76,5 @@ const Sound = (() => {
     return bgmOn;
   }
 
-  return { initPrefs, isSfxOn, isBgmOn, play, startBgm, stopBgm, toggleSfx, toggleBgm };
+  return { initPrefs, isSfxOn, isBgmOn, play, startBgm, stopBgm, suspend, resume, toggleSfx, toggleBgm };
 })();

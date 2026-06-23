@@ -44,13 +44,6 @@ window.addEventListener('DOMContentLoaded', () => {
     game.paused = false; UI.setPaused(false);
     game.toMenu(); UI.showScreen('menu'); Sound.startBgm();
   });
-  // 설정 → 앱 종료 (설치한 앱은 창 닫힘 / 브라우저 탭은 정책상 안내)
-  $('btnExitApp').addEventListener('click', () => {
-    $('settingsPanel').classList.remove('open');
-    try { window.close(); } catch (e) {}
-    setTimeout(() => { alert('설치한 앱(홈 화면 추가)에서는 바로 종료됩니다.\n브라우저에서는 탭(창)을 직접 닫아주세요.'); }, 250);
-  });
-
   // 일시정지 제어
   function setPause(on){
     if(game.state.screen !== 'playing') return;
@@ -155,5 +148,10 @@ window.addEventListener('DOMContentLoaded', () => {
   }
   requestAnimationFrame(frame);
 
-  document.addEventListener('visibilitychange', () => { last = 0; });
+  // 탭/창이 백그라운드로 가면 모든 소리 정지(폰에서 브라우저 내려도 음악 끊김), 돌아오면 복구
+  document.addEventListener('visibilitychange', () => {
+    last = 0;
+    if(document.hidden) Sound.suspend(); else Sound.resume();
+  });
+  window.addEventListener('pagehide', () => Sound.suspend());
 });

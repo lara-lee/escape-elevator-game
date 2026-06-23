@@ -328,8 +328,6 @@ body{
 .set-row.off .set-state{color:var(--muted)}
 .set-row.set-quit{justify-content:center;color:#fca5a5;font-weight:800;margin-top:2px}
 .set-row.set-quit:hover{background:rgba(239,68,68,.14)}
-.set-row.set-exit{justify-content:center;color:#f87171;font-weight:800}
-.set-row.set-exit:hover{background:rgba(239,68,68,.2)}
 .icon-btn{width:30px;height:30px;border:1px solid var(--border);border-radius:8px;background:var(--surface);
   color:var(--text);font-size:13px;cursor:pointer;flex-shrink:0}
 .icon-btn:active{transform:scale(.92)}
