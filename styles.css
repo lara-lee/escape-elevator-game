@@ -48,6 +48,7 @@ body{
 #menu h1{font-size:30px;font-weight:900;letter-spacing:-1px;margin-top:2px}
 #menu .subtitle{font-size:11px;letter-spacing:4px;color:var(--accent2);font-weight:700}
 #menu .tagline{color:var(--muted);font-size:13px;line-height:1.65;margin:10px 0 2px;max-width:300px}
+#menu .tag-cta{color:var(--accent2);font-weight:900;font-size:15px;margin:6px 0 0;letter-spacing:-.2px}
 
 /* 메뉴 액션 버튼 (네모 박스 가로 한 줄) */
 .menu-actions{display:flex;flex-direction:column;gap:11px;width:100%;max-width:270px;margin-top:22px}
