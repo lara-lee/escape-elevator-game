@@ -51,7 +51,7 @@ th{background:var(--surface);font-weight:700;white-space:nowrap}
 <body>
 <div class="header">
   <div><h1>퇴근 엘리베이터 <span style="font-size:13px;opacity:.6">Escape Elevator</span></h1>
-  <div class="header-meta"><span>사용자 흐름</span><span class="mono">v2.0</span><span>2026-06-19</span></div></div>
+  <div class="header-meta"><span>사용자 흐름</span><span class="mono">v2.1</span><span>2026-06-23</span></div></div>
   <button class="theme-toggle" onclick="toggleTheme()">🌓 테마</button>
 </div>
 <div class="docnav">
@@ -79,7 +79,7 @@ th{background:var(--surface);font-weight:700;white-space:nowrap}
   </div>
   <div style="margin:10px 0">
     <div class="branch"><b>성공</b> → 한 층 ▼ 하강 · 점수 +100 · 콤보 · 상승(하강) 연출</div>
-    <div class="branch"><b>실패(충돌)</b> → 문 재개방 · 하트 −1 · 콤보 초기화 (택배=지연 / 부장·대표=강제)</div>
+    <div class="branch"><b>실패(충돌)</b> → 문 재개방 · 하트 −1 · 콤보 초기화 (택배=지연 1.5초 / 부장·대표=강한 충격·진동)</div>
   </div>
   <div class="step-flow">
     <div class="step good">1층 로비 도착 → 🎉 퇴근 성공!</div>
@@ -113,8 +113,8 @@ th{background:var(--surface);font-weight:700;white-space:nowrap}
     <div class="step bad">문 재개방 · 하트 −1 · 흔들림/진동</div>
     <div class="step good">체크포인트마다 ❤️ 하트 낙하 → 탭해서 잡으면 +1</div>
   </div>
-  <div class="branch"><b>택배</b> 충돌 → 잠깐 닫기 잠금(지연)</div>
-  <div class="branch"><b>부장 / 대표</b> 충돌 → 강제 개방, 대표는 초고속이라 가장 위험(5단계)</div>
+  <div class="branch"><b>택배</b> 충돌 → 잠깐 닫기 잠금(지연 1.5초)</div>
+  <div class="branch"><b>부장 / 대표</b> 충돌 → 강한 충격(화면 흔들림·강한 진동), 대표는 초고속이라 가장 위험(5단계)</div>
 
   <div class="flow-title">S4. 클리어 ~ 다음 단계</div>
   <div class="step-flow">
@@ -132,9 +132,9 @@ th{background:var(--surface);font-weight:700;white-space:nowrap}
 
 <!-- ===== 화면 구성 ===== -->
 <div id="t3" class="tab-content">
-  <p class="intro">4개 화면 전환: 메인 → 단계 선택 → 게임 → 결과.</p>
+  <p class="intro">화면 전환: 메인 → (게임 방법) → 단계 선택 → 게임 → 결과. 규칙은 별도 <b>게임 방법</b> 화면으로 분리, 오디오는 우상단 <b>⚙ 설정</b>에 통합.</p>
   <div class="grid">
-    <div class="node"><b>① 메인</b><span>제목 · 규칙 · 승객 범례<br>[게임 시작 / 연습 게임]<br>오디오 토글(🔊/🎵)</span></div>
+    <div class="node"><b>① 메인</b><span>제목 · 스토리<br>[게임 시작 / 연습 게임]<br>[게임 방법 / 앱 설치]<br>⚙ 설정(배경음·효과음·나가기)</span></div>
     <div class="node" style="border-top-color:var(--accent2)"><b>② 단계 선택</b><span>1~5단계 카드<br>난이도 · 빌딩 층수 · 최고 점수</span></div>
     <div class="node" style="border-top-color:var(--good)"><b>③ 게임</b><span>층수 · 점수 · 콤보 · 하트<br>하강 진행 레일 🛗→🏁<br>엘리베이터 · 승객 · 문닫기 · ⏸</span></div>
     <div class="node" style="border-top-color:var(--warn)"><b>④ 결과</b><span>승리/실패 · 최종 점수<br>통계 · 최고 점수<br>[다음 단계 / 다시하기 / 메인]</span></div>
@@ -178,11 +178,11 @@ th{background:var(--surface);font-weight:700;white-space:nowrap}
   <div class="flow-title">승객</div>
   <table>
     <tr><th>승객</th><th>등장</th><th>속도</th><th>효과</th></tr>
-    <tr><td><span class="tag" style="background:var(--good)">🎓 인턴</span></td><td>20%</td><td>느림</td><td>-</td></tr>
-    <tr><td><span class="tag" style="background:var(--accent)">🧑‍💼 사원</span></td><td>60%</td><td>보통</td><td>-</td></tr>
-    <tr><td><span class="tag" style="background:var(--warn)">📦 택배</span></td><td>10%</td><td>빠름</td><td>지연</td></tr>
-    <tr><td><span class="tag" style="background:var(--bad)">👔 부장</span></td><td>10%</td><td>매우 빠름</td><td>강제 개방</td></tr>
-    <tr><td><span class="tag" style="background:var(--ceo)">🕴️ 대표</span></td><td>5단계</td><td>초고속</td><td>강제 개방</td></tr>
+    <tr><td><span class="tag" style="background:var(--good)">🎓 인턴</span></td><td>20%</td><td>느림 (×0.8)</td><td>-</td></tr>
+    <tr><td><span class="tag" style="background:var(--accent)">🧑‍💼 사원</span></td><td>60%</td><td>보통 (×1.0)</td><td>-</td></tr>
+    <tr><td><span class="tag" style="background:var(--warn)">📦 택배</span></td><td>10%</td><td>빠름 (×1.3)</td><td>지연 1.5초</td></tr>
+    <tr><td><span class="tag" style="background:var(--bad)">👔 부장</span></td><td>10%</td><td>매우 빠름 (×1.5)</td><td>강한 충격·진동</td></tr>
+    <tr><td><span class="tag" style="background:var(--ceo)">🕴️ 대표</span></td><td>5단계</td><td>초고속 (×1.9)</td><td>강한 충격·진동</td></tr>
   </table>
   <p style="font-size:12px;opacity:.7">충돌 시 하트 −1은 모두 동일. 차이는 속도·특수효과·등장 단계.</p>
 

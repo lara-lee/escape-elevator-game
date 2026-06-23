@@ -4,10 +4,13 @@
 기획·명세: [docs/](docs/) — [기획안](docs/planning.html) · [기능 명세서](docs/기능명세서.html) · [사용자 흐름](docs/user-flow.html)
 
 <p align="center">
-  <img src="assets/screenshot-menu.png" alt="메인 화면" width="270">
-  &nbsp;&nbsp;
-  <img src="assets/screenshot-game.png" alt="게임 화면" width="270">
+  <img src="assets/screenshot-menu.png" alt="메인 화면" width="240">
+  &nbsp;
+  <img src="assets/screenshot-help.png" alt="게임 방법 화면" width="240">
+  &nbsp;
+  <img src="assets/screenshot-game.png" alt="게임 중 화면" width="240">
 </p>
+<p align="center"><sub>메인 &nbsp;·&nbsp; 게임 방법 &nbsp;·&nbsp; 게임 중</sub></p>
 
 ## 실행
 
@@ -43,15 +46,15 @@
 
 ## 승객
 
-| 승객 | 등장 | 특징 | 충돌 시 |
-| --- | --- | --- | --- |
-| 🎓 인턴 | 20% | 느림 | 하트 −1 |
-| 🧑‍💼 사원 | 60% | 보통 | 하트 −1 |
-| 📦 택배 | 10% | 닫기 지연 유발 | 하트 −1 |
-| 👔 부장 | 10% | 빠름 | 하트 −1 |
-| 🕴️ 대표 | 5단계 한정 | **초고속** | 하트 −1 |
+| 승객 | 등장 | 속도 | 특수효과 | 충돌 시 |
+| --- | --- | --- | --- | --- |
+| 🎓 인턴 | 20% | 느림 (×0.8) | - | 하트 −1 |
+| 🧑‍💼 사원 | 60% | 보통 (×1.0) | - | 하트 −1 |
+| 📦 택배 | 10% | 빠름 (×1.3) | 문 닫기 1.5초 잠김 | 하트 −1 |
+| 👔 부장 | 10% | 더 빠름 (×1.5) | 강한 충격·진동 | 하트 −1 |
+| 🕴️ 대표 | 5단계 한정 | **초고속 (×1.9)** | 강한 충격·진동 | 하트 −1 |
 
-> 하트 소모는 모두 −1로 동일. 차이는 속도·특수효과(지연)·등장 단계.
+> 하트 소모는 모두 −1로 동일. 차이는 속도·특수효과·등장 단계. 속도 배수는 사원(×1.0) 기준.
 
 ## 오디오
 
