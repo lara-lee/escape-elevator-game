@@ -94,6 +94,7 @@ body{
   border:2px solid rgba(255,255,255,.5);box-shadow:0 0 8px var(--pc)}
 .pax b{font-size:10.5px;font-weight:800;color:var(--text)}
 .pax i{font-size:9px;font-style:normal;font-weight:900;white-space:nowrap}
+.pax .pax-spd{font-size:9px;font-style:normal;font-weight:700;color:var(--muted);margin-top:1px}
 .pax.low{--pc:#10b981}.pax.low span{background:#10b981}.pax.low i{color:#34d399}
 .pax.mid{--pc:#3b82f6}.pax.mid span{background:#3b82f6}.pax.mid i{color:#60a5fa}
 .pax.high{--pc:#f59e0b}.pax.high span{background:#f59e0b}.pax.high i{color:#fbbf24}
