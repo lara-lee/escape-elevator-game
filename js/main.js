@@ -24,12 +24,16 @@ window.addEventListener('DOMContentLoaded', () => {
   // 효과음 / 배경음 토글 (각각)
   const btnBgm = $('btnBgm'), btnSfx = $('btnSfx');
   function refreshAudio(){
-    btnBgm.classList.toggle('off', !Sound.isBgmOn());
-    btnSfx.classList.toggle('off', !Sound.isSfxOn());
+    const b = Sound.isBgmOn(), s = Sound.isSfxOn();
+    btnBgm.classList.toggle('off', !b); $('bgmState').textContent = b ? 'ON' : 'OFF';
+    btnSfx.classList.toggle('off', !s); $('sfxState').textContent = s ? 'ON' : 'OFF';
   }
   refreshAudio();
   btnBgm.addEventListener('click', () => { Sound.toggleBgm(); refreshAudio(); });
   btnSfx.addEventListener('click', () => { Sound.toggleSfx(); refreshAudio(); });
+  // ⚙ 설정 패널 토글 + 바깥 클릭 시 닫기
+  $('btnSettings').addEventListener('click', (e) => { e.stopPropagation(); $('settingsPanel').classList.toggle('open'); });
+  document.addEventListener('click', (e) => { if(!e.target.closest('.settings-wrap')) $('settingsPanel').classList.remove('open'); });
 
   // 일시정지 제어
   function setPause(on){

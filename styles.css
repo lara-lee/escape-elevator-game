@@ -275,13 +275,20 @@ body{
 .pop{animation:pop .5s ease}
 
 /* ===== 음소거 / 일시정지 버튼 ===== */
-.audio-ctrls{position:absolute;top:calc(10px + env(safe-area-inset-top));right:calc(10px + env(safe-area-inset-right));z-index:50;display:flex;gap:6px}
-.aud-btn{width:34px;height:34px;border:0;border-radius:50%;background:rgba(0,0,0,.42);color:#fff;
-  font-size:15px;cursor:pointer;line-height:1;position:relative}
-.aud-btn:active{transform:scale(.9)}
-.aud-btn.off{opacity:.5}
-.aud-btn.off::after{content:"";position:absolute;left:7px;right:7px;top:48%;height:2px;background:#fff;border-radius:2px;
-  transform:rotate(-45deg)}
+.settings-wrap{position:absolute;top:calc(10px + env(safe-area-inset-top));right:calc(10px + env(safe-area-inset-right));z-index:50}
+.settings-btn{width:34px;height:34px;border:0;border-radius:50%;background:rgba(0,0,0,.42);color:#fff;font-size:16px;cursor:pointer;line-height:1}
+.settings-btn:active{transform:scale(.92)}
+.settings-panel{position:absolute;top:42px;right:0;display:none;flex-direction:column;gap:6px;
+  background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:8px;min-width:164px;
+  box-shadow:0 12px 32px rgba(0,0,0,.55)}
+.settings-panel.open{display:flex}
+.set-row{display:flex;align-items:center;justify-content:space-between;gap:14px;width:100%;
+  appearance:none;border:0;cursor:pointer;background:var(--frame);color:var(--text);
+  font-family:inherit;font-size:13px;font-weight:700;padding:9px 12px;border-radius:8px}
+.set-row:active{transform:scale(.98)}
+.set-state{font-size:12px;font-weight:900;color:var(--good)}
+.set-row.off{opacity:.75}
+.set-row.off .set-state{color:var(--muted)}
 .icon-btn{width:30px;height:30px;border:1px solid var(--border);border-radius:8px;background:var(--surface);
   color:var(--text);font-size:13px;cursor:pointer;flex-shrink:0}
 .icon-btn:active{transform:scale(.92)}

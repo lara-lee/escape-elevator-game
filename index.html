@@ -17,9 +17,12 @@
 </head>
 <body>
 <div id="app">
-  <div class="audio-ctrls">
-    <button id="btnBgm" class="aud-btn" aria-label="배경음 켜기/끄기">🎵</button>
-    <button id="btnSfx" class="aud-btn" aria-label="효과음 켜기/끄기">🔊</button>
+  <div class="settings-wrap">
+    <button id="btnSettings" class="settings-btn" aria-label="설정">⚙️</button>
+    <div class="settings-panel" id="settingsPanel">
+      <button id="btnBgm" class="set-row"><span>🎵 배경음</span><span class="set-state" id="bgmState">ON</span></button>
+      <button id="btnSfx" class="set-row"><span>🔊 효과음</span><span class="set-state" id="sfxState">ON</span></button>
+    </div>
   </div>
 
   <!-- ===== 메인 화면 ===== -->
